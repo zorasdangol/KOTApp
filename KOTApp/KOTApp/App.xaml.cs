@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+using KOTApp.SQLiteAccess;
+using KOTApp.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,14 +12,28 @@ namespace KOTApp
 {
 	public partial class App : Application
 	{
-		public App ()
+        public static string DatabaseLocation = string.Empty;
+
+        public App ()
 		{
 			InitializeComponent();
 
-			MainPage = new KOTApp.MainPage();
+			MainPage = new LoginPage();
 		}
 
-		protected override void OnStart ()
+        public App(string databaseLocation)
+        {
+            InitializeComponent();
+
+            MainPage = (new LoginPage());
+
+            DatabaseLocation = databaseLocation;
+
+            LoginUser.LoadUserAndIP(App.DatabaseLocation);
+            
+        }
+
+        protected override void OnStart ()
 		{
 			// Handle when your app starts
 		}

@@ -6,5 +6,11 @@
 
 		<!-- Application resource dictionary -->
 
-	</Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="orangeColor">#ffb700</Color>
+            <Color x:Key="greenColor">#466d1d</Color>
+            <Color x:Key="lightGreenColor">#90ee90</Color>
+
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

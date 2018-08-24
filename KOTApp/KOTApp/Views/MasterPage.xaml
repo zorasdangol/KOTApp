@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="KOTApp.Views.MasterPage"
+                  Icon="rms.png">
+    <MasterDetailPage.Master >
+        <ContentPage Title="RMS"    
+                     Icon="rms.png">
+        </ContentPage>
+    </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <NavigationPage>
+            <!--<x:Arguments>
+                <ContentPage Padding="5" 
+                             Title="Data Collector">
+                    <ContentPage.Content >
+                        <StackLayout>
+                            <Label Text="This is home Page"/>
+                        </StackLayout>
+
+                    </ContentPage.Content>
+                </ContentPage>
+            </x:Arguments>-->
+        </NavigationPage>
+    </MasterDetailPage.Detail>
+</MasterDetailPage>

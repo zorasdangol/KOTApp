@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KOTApp.Views.HomePage"
+             Icon="rms.png">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content >
+        <ScrollView>
+            <Grid>
+                <Image Source="homeBackground.jpg" Aspect="AspectFill" Opacity="0.3" />
+                <StackLayout Opacity="1" >
+                    <Label Text="Welcome to KOT App!"
+                           FontSize="50"
+                           Margin="0,20"
+                           TextColor="Black"
+                           VerticalOptions="Start" 
+                           HorizontalOptions="CenterAndExpand" />
+                    <StackLayout Orientation="Horizontal"
+                                 Margin="30">
+                        <Label Text="User Name:"
+                               Margin="0,0,0,0"
+                               TextColor="Black"
+                               VerticalOptions="Center"
+                               FontAttributes="Bold"
+                               FontSize="30"/>
+                        <Label Text="{Binding User.UserName }"                   
+                               TextColor="Black"
+                               VerticalOptions="Center"
+                               Margin="20,0"
+                               FontSize="30"
+                               />
+                        <Image Source="pp.jpg"  
+                               Margin="10,0"
+                               HeightRequest="250"
+                               WidthRequest="250"
+                              VerticalOptions="Center"
+                               HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout VerticalOptions="CenterAndExpand"
+                                 HorizontalOptions="FillAndExpand"
+                                 Margin="20">
+                        
+                        <Button Text="KOT" 
+                                FontSize="40"
+                                Margin="0,10"
+                                TextColor="Black"    
+                                BackgroundColor="Transparent"
+                                Command="{Binding MenuCommand}"
+                                CommandParameter="1"/>
+                        <Button Text="KOT Memo"   
+                                FontSize="40"
+                                Margin="0,10"
+                                TextColor="Black"
+                                BackgroundColor="Transparent"
+                                Command="{Binding MenuCommand}"
+                                CommandParameter="2"/>
+                        <Button Text="Table Transfer" 
+                                FontSize="40"
+                                Margin="0,10"
+                                TextColor="Black"                      
+                                BackgroundColor="Transparent"
+                                Command="{Binding MenuCommand}"
+                                CommandParameter="3"/>
+                        <Button Text="Sync MenuItem"  
+                                FontSize="40"
+                                Margin="0,10"
+                                TextColor="Black"                    
+                                BackgroundColor="Transparent"
+                                Command="{Binding MenuCommand}"
+                                CommandParameter="4"/>
+
+                        <Button Text="LogOut"  
+                                FontSize="40"
+                                Margin="0,10"
+                                TextColor="Black"                   
+                                BackgroundColor="Transparent"
+                                Command="{Binding MenuCommand}"
+                                CommandParameter="5"/>
+                    </StackLayout>
+                </StackLayout>
+                
+                <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
+                      HorizontalOptions="Center"
+                     VerticalOptions="Center">
+                    <StackLayout Orientation="Vertical">
+                        <ActivityIndicator IsRunning="{Binding IsLoading}" />
+                        <Label Text="Loading! Please wait..."
+                               TextColor="Black"
+                               FontAttributes="Bold"
+                               FontSize="Large"/>
+                    </StackLayout>
+                </Grid>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
