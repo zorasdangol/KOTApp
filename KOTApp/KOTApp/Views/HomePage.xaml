@@ -34,12 +34,6 @@
                                Margin="20,0"
                                FontSize="30"
                                />
-                        <Image Source="pp.jpg"  
-                               Margin="10,0"
-                               HeightRequest="250"
-                               WidthRequest="250"
-                              VerticalOptions="Center"
-                               HorizontalOptions="End"/>
                     </StackLayout>
 
                     <StackLayout VerticalOptions="CenterAndExpand"
@@ -90,7 +84,7 @@
                      VerticalOptions="Center">
                     <StackLayout Orientation="Vertical">
                         <ActivityIndicator IsRunning="{Binding IsLoading}" />
-                        <Label Text="Loading! Please wait..."
+                        <Label Text="{Binding LoadingMessage}"
                                TextColor="Black"
                                FontAttributes="Bold"
                                FontSize="Large"/>

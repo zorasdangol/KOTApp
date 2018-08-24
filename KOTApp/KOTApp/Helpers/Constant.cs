@@ -31,8 +31,13 @@ namespace KOTApp.Helpers
         public static string LoginURL = "userVerification";
 
         public static List<MenuItem> MenuItemsList { get; set; }
+        public static List<TableDetail> TableList { get; set; }
+        public static List<TableDetail> PackedTableList { get; set; }
 
         public static string MenuItemsURL = "getMenuItems";
+        public static string DayCloseTableURL = "GetTableDetails?DayCloseTable=1";
+        public static string GetTableURL = "GetTableDetails?GetTable=1";
+        public static string GetTableNoURL = "GetTableDetails?GetTableNo=1";
 
         public static void SetMainURL(User User)
         {

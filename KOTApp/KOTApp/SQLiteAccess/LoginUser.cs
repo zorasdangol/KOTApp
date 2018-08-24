@@ -12,7 +12,7 @@ namespace KOTApp.SQLiteAccess
 {
     public class LoginUser
     {
-        public static void LoadUserAndIP(string DatabaseLocation)
+        public static bool LoadUserAndIP(string DatabaseLocation)
         {
             try
             {
@@ -31,16 +31,18 @@ namespace KOTApp.SQLiteAccess
                         Helpers.Constants.User.Port = apiRow.FirstOrDefault().Port;
                         
                         Helpers.Constants.SetMainURL(Helpers.Constants.User);
+                        return true;
                     }
                     else
                     {
-                        conn.Insert(Helpers.Constants.User);
+                        return false;
                     }
                 }
             }
             catch (Exception e)
             {
                 DependencyService.Get<IMessage>().ShortAlert(e.Message);
+                return false;
             }
         }
 
@@ -54,6 +56,25 @@ namespace KOTApp.SQLiteAccess
                     
                     conn.DeleteAll<User>();
                     int rows = conn.Insert(User);
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                DependencyService.Get<IMessage>().ShortAlert(e.Message);
+                return false;
+            }
+        }
+
+        public static bool DeleteUserAndIP(string DatabaseLocation)
+        {
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(DatabaseLocation))
+                {
+                    conn.CreateTable<User>();
+
+                    conn.DeleteAll<User>();
                     return true;
                 }
             }

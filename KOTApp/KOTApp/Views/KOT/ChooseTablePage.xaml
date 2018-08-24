@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KOTApp.Views.KOT.ChooseTablePage"
+             xmlns:con="clr-namespace:KOTApp.Converters"  
+             BackgroundColor="AntiqueWhite">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <con:TableColorConverter x:Key="TCC"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Order="Primary" 
+                     Text="Refresh"                     
+                     Icon="refresh.png"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Margin="20">
+                <Label Text="Select Section:"
+                       FontAttributes="Bold"
+                       FontSize="Large"
+                       Margin="10"/>
+                <Picker ItemsSource="{Binding LayoutList}"
+                        Title="Select Section"
+                        Margin="10">                    
+                </Picker>
+                <ListView ItemsSource="{Binding TableList}"
+                          SeparatorVisibility="None"
+                          SelectedItem=""
+                          IsEnabled="False"
+                          HasUnevenRows="True"
+                          Margin="20">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Margin="10"
+                                             Padding="0">
+                                    <Frame OutlineColor="Black"
+                                           CornerRadius="5"                                           
+                                           Margin="0"
+                                           Padding="0">
+                                        <Button Text="{Binding TableNo}"                                            
+                                                Margin="0"                                              
+                                                TextColor="WhiteSmoke"
+                                                BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
+                                                FontSize="40"/>
+                                    </Frame>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -12,7 +12,7 @@
         android:scaleType="fitCenter"
         android:src="@drawable/rms"
         android:layout_gravity="left"
-        android:id="@+id/imageView2" />
+        android:id="@+id/toolbarIcon" />
     <TextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"

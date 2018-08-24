@@ -2,6 +2,7 @@
 using KOTApp.Interfaces;
 using KOTApp.SQLiteAccess;
 using KOTApp.Views;
+using KOTApp.Views.KOT;
 using KOTAppClassLibrary.Models;
 using Newtonsoft.Json;
 using System;
@@ -33,6 +34,13 @@ namespace KOTApp.ViewModels
             set { _IsLoading = value; OnPropertyChanged("IsLoading"); }
         }
 
+        private string _LoadingMessage;
+        public string LoadingMessage
+        {
+            get { return _LoadingMessage; }
+            set { _LoadingMessage = value; OnPropertyChanged("LoadingMessage"); }
+        }
+
         public Command MenuCommand { get; set; }
 
         public List<KOTAppClassLibrary.Models.MenuItem> MenuItemsList { get; set; }
@@ -42,6 +50,7 @@ namespace KOTApp.ViewModels
             User = Helpers.Constants.User;
             MenuCommand = new Command<string>(ExecuteMenuCommand);
             IsLoading = false;
+            LoadingMessage = "";
             MenuItemsList = new List<KOTAppClassLibrary.Models.MenuItem>();
         }
 
@@ -49,7 +58,53 @@ namespace KOTApp.ViewModels
         {
             if(index == "1")
             {
+                IsLoading = true;
+                LoadingMessage = "Please Wait, Checking pending KOT";
+                var res = await TableDataConnection.CheckPendingKOT();
+                LoadingMessage = "Please Wait, Checking Tables";
+                if(res == "0")
+                {
 
+                    var functionResponse = await TableDataConnection.GetTable();
+                    if(functionResponse.status == "ok")
+                    {
+                        Helpers.Constants.TableList = functionResponse.result as List<TableDetail>;
+                    }
+                    else
+                    {
+                        Helpers.Constants.TableList = new List<TableDetail>(); 
+                    }
+
+                    var packedResponse = await TableDataConnection.GetTableNo();
+                    if(packedResponse.status == "ok")
+                    {
+                        Helpers.Constants.PackedTableList = packedResponse.result as List<TableDetail>;
+                    }
+                    else
+                    {
+                        Helpers.Constants.PackedTableList = new List<TableDetail>();
+                    }
+
+                    IsLoading = false;
+                    if(Helpers.Constants.TableList.Count > 0)
+                    {
+                        await App.Current.MainPage.Navigation.PushAsync(new ChooseTablePage());
+                    }
+                    else
+                    {
+                        DependencyService.Get<IMessage>().ShortAlert("No Tables available.");
+                    }
+                   
+                }
+                else if(res == "1")
+                {
+                    await App.Current.MainPage.DisplayAlert("KOT Pending", "Clear all the pending to start new KOT","Ok");
+                }
+                else
+                {
+                    DependencyService.Get<IMessage>().ShortAlert("Cannot Connect to Server.");
+                }
+                IsLoading = false;
             }
             else if(index == "2")
             {
@@ -85,7 +140,10 @@ namespace KOTApp.ViewModels
             {
                 var res = await App.Current.MainPage.DisplayAlert("Confirm","Are you sure to log Out?","Yes", "No");
                 if(res)
+                {
+                    LoginUser.DeleteUserAndIP(App.DatabaseLocation);
                     App.Current.MainPage = new LoginPage();
+                }
 
             }
 

@@ -25,12 +25,15 @@ namespace KOTApp
         {
             InitializeComponent();
 
-            MainPage = (new LoginPage());
 
             DatabaseLocation = databaseLocation;
 
-            LoginUser.LoadUserAndIP(App.DatabaseLocation);
-            
+            var res = LoginUser.LoadUserAndIP(App.DatabaseLocation);
+
+            if (res)
+                MainPage = new NavigationPage(new HomePage());
+            else
+                MainPage = new LoginPage();
         }
 
         protected override void OnStart ()

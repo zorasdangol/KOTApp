@@ -142,6 +142,7 @@ namespace KOTApp.ViewModels
             LoginCommand = new Command(ExecuteLoginCommand);
             User = new User();
             IsLoading = false;
+            
         }
 
         public async void ExecuteLoginCommand()
@@ -172,8 +173,7 @@ namespace KOTApp.ViewModels
                         Helpers.Constants.User = User;
                         Helpers.Constants.SetMainURL(User);
                         LoginUser.SetUserAndIP(App.DatabaseLocation, User);
-                        DependencyService.Get<IMessage>().ShortAlert("Logged In Successfully");
-
+                        
                         var menuitemResponse = await LoadMenuItem.GetMenuItemAsync();
                         if(menuitemResponse.status == "ok")
                         {
@@ -181,6 +181,7 @@ namespace KOTApp.ViewModels
                             SaveMenuItems.SaveList(App.DatabaseLocation, Helpers.Constants.MenuItemsList);
                         }
 
+                        DependencyService.Get<IMessage>().ShortAlert("Logged In Successfully");
                         App.Current.MainPage = new NavigationPage(new HomePage());
                         //App.Current.MainPage = (new MasterPage());
                     }
@@ -195,5 +196,6 @@ namespace KOTApp.ViewModels
                 DependencyService.Get<IMessage>().ShortAlert("Error::" + e.Message);
             }
         }
+        
     }
 }
