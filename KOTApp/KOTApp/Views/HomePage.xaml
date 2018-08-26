@@ -69,26 +69,33 @@
                                 Command="{Binding MenuCommand}"
                                 CommandParameter="4"/>
 
-                        <Button Text="LogOut"  
+                       
+                            <Button Text="LogOut"  
                                 FontSize="40"
                                 Margin="0,10"
                                 TextColor="Black"                   
                                 BackgroundColor="Transparent"
                                 Command="{Binding MenuCommand}"
                                 CommandParameter="5"/>
+                        
                     </StackLayout>
                 </StackLayout>
                 
                 <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
                       HorizontalOptions="Center"
                      VerticalOptions="Center">
-                    <StackLayout Orientation="Vertical">
-                        <ActivityIndicator IsRunning="{Binding IsLoading}" />
-                        <Label Text="{Binding LoadingMessage}"
-                               TextColor="Black"
-                               FontAttributes="Bold"
-                               FontSize="Large"/>
-                    </StackLayout>
+                    <Frame OutlineColor="Black"
+                           CornerRadius="10"
+                           Padding="10"
+                           BackgroundColor="White">
+                            <StackLayout Orientation="Vertical">
+                            <ActivityIndicator IsRunning="{Binding IsLoading}" />
+                            <Label Text="{Binding LoadingMessage}"
+                                   TextColor="Black"
+                                   FontAttributes="Bold"
+                                   FontSize="Large"/>
+                        </StackLayout>
+                    </Frame>
                 </Grid>
             </Grid>
         </ScrollView>

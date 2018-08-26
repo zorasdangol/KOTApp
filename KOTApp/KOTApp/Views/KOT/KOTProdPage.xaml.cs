@@ -1,5 +1,4 @@
-﻿using KOTApp.ViewModels.KOT;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,18 +10,16 @@ using Xamarin.Forms.Xaml;
 namespace KOTApp.Views.KOT
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ChooseTablePage : ContentPage
+	public partial class KOTProdPage : MasterDetailPage
 	{
-        public ChooseTablePageVM viewModel { get; set; }
-		public ChooseTablePage ()
+		public KOTProdPage ()
 		{
 			InitializeComponent ();
-            BindingContext = viewModel = new ChooseTablePageVM();
 		}
 
         protected override bool OnBackButtonPressed()
         {
-            App.Current.MainPage = new NavigationPage(new HomePage());
+            App.Current.MainPage = new NavigationPage(new ChooseTablePage());
             return true;
         }
     }

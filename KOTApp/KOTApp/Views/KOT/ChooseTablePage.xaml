@@ -3,10 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KOTApp.Views.KOT.ChooseTablePage"
              xmlns:con="clr-namespace:KOTApp.Converters"  
+             xmlns:local="clr-namespace:KOTApp.Controls"
              BackgroundColor="AntiqueWhite">
     <ContentPage.Resources>
         <ResourceDictionary>
             <con:TableColorConverter x:Key="TCC"/>
+            
+            <Style x:Key="ButtonLV"  TargetType="Button">
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="TextColor" Value="WhiteSmoke"/>
+                <Setter Property="FontSize" Value="35"/>
+            </Style>
+
+            <Style x:Key="listView" TargetType="ListView">
+                <Setter Property="SeparatorVisibility" Value="None"/>
+                <!--<Setter Property="IsEnabled" Value="False"/>-->
+                <Setter Property="HasUnevenRows" Value="True"/>
+                <Setter Property="Margin" Value="20"/>
+            </Style>
+            
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -16,7 +31,6 @@
                      Icon="refresh.png"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ScrollView>
             <StackLayout Margin="20">
                 <Label Text="Select Section:"
                        FontAttributes="Bold"
@@ -24,35 +38,58 @@
                        Margin="10"/>
                 <Picker ItemsSource="{Binding LayoutList}"
                         Title="Select Section"
+                        SelectedItem="{Binding SelectedLayout}"
                         Margin="10">                    
                 </Picker>
-                <ListView ItemsSource="{Binding TableList}"
-                          SeparatorVisibility="None"
-                          SelectedItem=""
-                          IsEnabled="False"
-                          HasUnevenRows="True"
-                          Margin="20">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Margin="10"
-                                             Padding="0">
-                                    <Frame OutlineColor="Black"
-                                           CornerRadius="5"                                           
-                                           Margin="0"
-                                           Padding="0">
-                                        <Button Text="{Binding TableNo}"                                            
-                                                Margin="0"                                              
-                                                TextColor="WhiteSmoke"
-                                                BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
-                                                FontSize="40"/>
-                                    </Frame>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
-        </ScrollView>
+                <ScrollView>
+                    <StackLayout Orientation="Horizontal">
+                        <ListView x:Name="listView1" ItemsSource="{Binding TableListLeft}"
+                                  Style="{StaticResource listView}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Margin="10"
+                                                     Padding="0">
+                                            <Frame OutlineColor="Black"
+                                                   CornerRadius="5"                                           
+                                                   Margin="0"
+                                                   Padding="0">
+                                                
+                                            <Button Text="{Binding TableNo}"  
+                                                        Style="{StaticResource ButtonLV}"
+                                                        BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
+                                                        Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView1}}"
+                                                        CommandParameter="{Binding TableNo}"/>
+                                            </Frame>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <ListView x:Name="listView2" ItemsSource="{Binding TableListRight}"
+                                  Style="{StaticResource listView}">                        
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Margin="10"
+                                                     Padding="0">
+                                            <Frame OutlineColor="Black"
+                                                               CornerRadius="5"                                           
+                                                               Margin="0"
+                                                               Padding="0">
+                                            <Button Text="{Binding TableNo}" 
+                                                        Style="{StaticResource ButtonLV}"
+                                                        BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
+                                                        Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView2}}"
+                                                        CommandParameter="{Binding TableNo}"/>
+                                        </Frame>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+                </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KOTApp.Views.KOT.KOTProdPage">
+    <MasterDetailPage.Master>
+        <ContentPage Title="RMS"    
+                     Icon="rms.png">
+        </ContentPage>
+    </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <NavigationPage>
+            <x:Arguments>
+                <ContentPage Padding="5">
+                    <ContentPage.Content >
+                        <StackLayout>
+                            
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>                                
+                               
+                                <Button Grid.Column="0"
+                                        Text="New KOT"
+                                        FontAttributes="Bold"
+                                        BorderWidth="5"
+                                        BorderColor="AliceBlue"
+                                        BorderRadius="2"
+                                        BackgroundColor="Green"/>
+                               
+                                <Label Grid.Column="1"
+                                       VerticalOptions="Center"
+                                       Text="Table No:"
+                                       Margin="5,0"
+                                       FontSize="Large"
+                                       FontAttributes="Bold"/>
+                                <Label Grid.Column="2"
+                                       VerticalOptions="Center"
+                                       HorizontalTextAlignment="Start"
+                                       HorizontalOptions="Start"
+                                       Text="Table No 12"
+                                       FontSize="Large"
+                                       FontAttributes="Bold"
+                                       TextColor="Red"/>
+
+                                <Button Grid.Column="3"
+                                        BackgroundColor="Green"
+                                        FontAttributes="Bold"
+                                        Text="Save KOT"/>
+                            
+                            </Grid>
+
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="6*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Frame Grid.Column="0"                                       
+                                       OutlineColor="Black"
+                                       Padding="5"
+                                       BackgroundColor="Transparent"
+                                       CornerRadius="2">
+                                    <StackLayout Orientation="Horizontal"
+                                                 Margin="5"
+                                                 HorizontalOptions="FillAndExpand"
+                                                 VerticalOptions="Center">
+                                        <Entry Text=""
+                                               HorizontalTextAlignment="Center"
+                                               HorizontalOptions="FillAndExpand"
+                                               Placeholder="Search Item "/>
+                                        <Switch />
+                                        <Label Text="Code"
+                                                 HorizontalOptions="Center"
+                                                 VerticalOptions="Center"/>
+                                        <Switch />
+                                        <Label Text="Name"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"/>
+                                    </StackLayout>
+                                </Frame>
+
+                                <Label Grid.Column="2"
+                                       VerticalOptions="Center"
+                                       Text="No. of Pax:"
+                                       HorizontalOptions="Center"/>
+                                <Entry Grid.Column="3"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center"
+                                       Text=""
+                                       Keyboard="Numeric"
+                                       Placeholder="Pax"/>
+
+                            </Grid>
+
+                            <BoxView Margin="0,5"
+                                     BackgroundColor="Red"                                     
+                                     HeightRequest="2"/>
+                        </StackLayout>
+
+                    </ContentPage.Content>
+                </ContentPage>
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
+</MasterDetailPage>
