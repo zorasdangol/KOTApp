@@ -1,6 +1,8 @@
 ﻿using KOTApp.DataAccessLayer;
+using KOTApp.Interfaces;
 using KOTApp.Views.KOT;
 using KOTAppClassLibrary.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,7 +75,22 @@ namespace KOTApp.ViewModels.KOT
             }
         }
 
+        private bool _IsLoading;
+        public bool IsLoading
+        {
+            get { return _IsLoading; }
+            set { _IsLoading = value; OnPropertyChanged("IsLoading"); }
+        }
+
+        private string _LoadingMessage;
+        public string LoadingMessage
+        {
+            get { return _LoadingMessage; }
+            set { _LoadingMessage = value; OnPropertyChanged("LoadingMessage"); }
+        }
+
         public Command TableBTCommand { get; set; }
+        public Command RefreshCommand { get; set; }
 
 
         public ChooseTablePageVM()
@@ -82,7 +99,10 @@ namespace KOTApp.ViewModels.KOT
             {
                 SetLayout();
                 SelectedLayout = "All";
+                IsLoading = false;
+                LoadingMessage = "";
                 TableBTCommand = new Command<string>(ExecuteTableBTCommand);
+                RefreshCommand = new Command(ExecuteRefreshCommand);
             }
             catch
             {
@@ -92,7 +112,7 @@ namespace KOTApp.ViewModels.KOT
 
         public void SetLayout()
         {
-            var filter = Helpers.Constants.TableList.GroupBy(x => x.LayoutName).Select(y => y.FirstOrDefault()).ToList();
+            var filter = Helpers.Data.TableList.GroupBy(x => x.LayoutName).Select(y => y.FirstOrDefault()).ToList();
 
             LayoutList = new List<string>();
             LayoutList.Insert(0, "All");
@@ -109,12 +129,12 @@ namespace KOTApp.ViewModels.KOT
                 TableList = new List<TableDetail>();
                 if (value == "All")
                 {
-                    TableList = Helpers.Constants.TableList;
+                    TableList = Helpers.Data.TableList;
                     DivideTableView(TableList);
                 }
                 else
                 {
-                    TableList = Helpers.Constants.TableList.Where(x => x.LayoutName == value).ToList();
+                    TableList = Helpers.Data.TableList.Where(x => x.LayoutName == value).ToList();
                     DivideTableView(TableList);
                 }
             }
@@ -128,14 +148,13 @@ namespace KOTApp.ViewModels.KOT
         {
             try
             {              
-
-                if (Helpers.Constants.PackedTableList.Count > 0)
-                {
-                    foreach (var table in Helpers.Constants.PackedTableList)
-                    {
-                        TableList.Find(x => x.TableNo == table.TableNo).IsPacked = true;
-                    }
-                }
+                //if (Helpers.Data.PackedTableList.Count > 0)
+                //{
+                //    foreach (var table in Helpers.Data.PackedTableList)
+                //    {
+                //        TableList.Find(x => x.TableNo == table.TableNo).IsPacked = true;
+                //    }
+                //}
 
                 TableListLeft = new List<TableDetail>();
                 TableListRight = new List<TableDetail>();
@@ -159,11 +178,60 @@ namespace KOTApp.ViewModels.KOT
             }
         }
 
-        public void ExecuteTableBTCommand(string TableNo)
+        public async void ExecuteTableBTCommand(string TableNo)
         {
-            App.Current.MainPage = new KOTProdPage();
-
+            try
+            {
+                LoadingMessage = "Please Wait, Loading Table Data";
+                IsLoading = true;
+                Helpers.Data.SelectedTable = TableList.Find(x => x.TableNo == TableNo);
+                var functionResponse = await TableDataAccess.GetTableDetailsAsync(TableNo);
+                if (functionResponse.status == "ok")
+                {
+                    var result = JsonConvert.DeserializeObject<List<KOTProd>>(functionResponse.result.ToString());
+                    Helpers.Data.OrderItemsList = result;
+                }
+                IsLoading = false;
+                await App.Current.MainPage.Navigation.PushAsync(new KOTProdTabbedPage());
+            }
+            catch
+            {
+                await App.Current.MainPage.Navigation.PushAsync(new KOTProdTabbedPage());
+            }
         }
-      
+
+        public async void ExecuteRefreshCommand()
+        {
+            LoadingMessage = "Please Wait, Checking pending KOT";
+            IsLoading = true;
+            // var res = await TableDataAccess.CheckPendingKOTAsync();
+
+            //if (res == "0")
+            {
+                var functionResponse = await TableDataAccess.GetTableAsync();
+                if (functionResponse.status == "ok")
+                {
+                    var list = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
+                    Helpers.Data.TableList = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
+                    TableList = Helpers.Data.TableList;
+                }
+                else
+                {
+                    Helpers.Data.TableList = new List<TableDetail>();
+                    TableList = Helpers.Data.TableList;
+                }
+                IsLoading = false;
+                if (Helpers.Data.TableList.Count > 0)
+                {
+                    SetLayout();
+                    ViewSelectedTable("All");
+                    SelectedLayout = "All";
+                }
+                else
+                {
+                    DependencyService.Get<IMessage>().ShortAlert("No Tables available.");
+                }
+            }
+        }
     }
 }

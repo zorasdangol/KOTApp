@@ -17,7 +17,6 @@
                            Margin="0,10,0,10">
                         <Label HorizontalOptions="Center"
                            Text="RMS Login"
-                           FontSize="Large"
                            TextColor="Red"/>
                     </Frame>
 
@@ -27,7 +26,6 @@
                                  BackgroundColor="Red"/>
 
                         <Label Text="UserName"
-                               FontSize="Large"
                                Margin="0,5,0,5"
                                TextColor="Red"/>
                         <Entry Placeholder="Enter UserName"
@@ -35,7 +33,6 @@
                                />
                         <Label Text="Password"
                                TextColor="Red"
-                               FontSize="Large"
                                Margin="0,5,0,5"/>
                         <Entry Placeholder="Enter Password"
                                IsPassword="{Binding HidePassword}"                               
@@ -50,7 +47,6 @@
                         </StackLayout>
 
                         <Button Text="Login"
-                                FontSize="Large"
                                 TextColor="White"
                                 Command="{Binding LoginCommand}"
                                 BackgroundColor="Green"/>
@@ -68,7 +64,6 @@
                         
                         <StackLayout VerticalOptions="End">
                         <Label Text="Server IP"
-                               FontSize="Large"
                                TextColor="LightGreen"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -79,31 +74,30 @@
                             </Grid.ColumnDefinitions>
 
                             <Entry Grid.Column="0"
-                                   Placeholder="192"
+                                   Placeholder="ip1"
                                    Text="{Binding ip1}"
                                    Keyboard="Numeric"
                                    HorizontalTextAlignment="Center"/>
                             <Entry Grid.Column="1" 
-                                   Placeholder="168"
+                                   Placeholder="ip2"
                                    Keyboard="Numeric"
                                    Text="{Binding ip2}" 
                                    HorizontalTextAlignment="Center"/>
                             <Entry Grid.Column="2" 
-                                   Placeholder="1" 
+                                   Placeholder="ip3" 
                                    Keyboard="Numeric"
                                    Text="{Binding ip3}"
                                    HorizontalTextAlignment="Center"/>
                             <Entry Grid.Column="3" 
-                                   Placeholder="100"
+                                   Placeholder="ip4"
                                    Keyboard="Numeric"
                                    Text="{Binding ip4}"
                                    HorizontalTextAlignment="Center"/>
                         </Grid>
                         <Label Text="PORT #"   
-                               FontSize="Large"
                                TextColor="LightGreen"/>
-                                <Entry Placeholder="8080"   
-                                   Keyboard="Numeric"                            
+                        <Entry Placeholder="Port"   
+                               Keyboard="Numeric"                            
                                Text="{Binding Port}"/>
                         </StackLayout>
                     </Frame>
@@ -115,15 +109,22 @@
                 </StackLayout>
 
                 <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
-                      HorizontalOptions="Center"
-                     VerticalOptions="Center">
-                    <StackLayout Orientation="Vertical">
-                        <ActivityIndicator IsRunning="{Binding IsLoading}" />
-                        <Label Text="Loading! Please wait..."
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand"
+                     >
+                    <Frame OutlineColor="Black"
+                           CornerRadius="10"
+                           Padding="20"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           BackgroundColor="White">
+                        <StackLayout Orientation="Vertical">
+                            <ActivityIndicator IsRunning="{Binding IsLoading}" />
+                            <Label Text="Loading! Please wait..."
                                TextColor="Black"
-                               FontAttributes="Bold"
-                               FontSize="Large"/>
-                    </StackLayout>
+                               FontAttributes="Bold"/>
+                        </StackLayout>
+                    </Frame>
                 </Grid>
                 
             </Grid>

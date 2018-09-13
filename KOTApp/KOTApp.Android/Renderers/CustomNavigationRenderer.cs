@@ -37,10 +37,21 @@ namespace KOTApp.Droid.Renderers
             ImageView toolbarIcon = FindViewById<ImageView>(Resource.Id.toolbarIcon);
             TextView toolbar_title = FindViewById<TextView>(Resource.Id.toolbar_title);
 
-            if(CurrentPage is ChooseTablePage)
+            if (CurrentPage is HomePage)
+            {
+                toolbar_title.Text = "RMS";
+            }
+            else if(CurrentPage is ChooseTablePage)
             {
                 toolbar_title.Text="Choose Table View";
             }
+
+            else if(CurrentPage is KOTProdTabbedPage)
+            {
+                toolbarIcon =  null;
+                toolbar_title.Text = "Items";
+            }
+
 
             //toolbarIcon.Visibility = visible ? Android.Views.ViewStates.Visible : Android.Views.ViewStates.Gone;
         }

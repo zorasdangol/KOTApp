@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="KOTApp.App">
+             x:Class="KOTApp.App"
+             xmlns:markupExtensions="clr-namespace:KOTApp.Controls">
 	<Application.Resources>
 
 		<!-- Application resource dictionary -->
@@ -10,6 +11,48 @@
             <Color x:Key="orangeColor">#ffb700</Color>
             <Color x:Key="greenColor">#466d1d</Color>
             <Color x:Key="lightGreenColor">#90ee90</Color>
+
+            <Style TargetType="Button">
+                <Setter Property="FontSize">                    
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Tablet="24"
+                                 Phone="18"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="White"/>
+            </Style>
+
+            <Style TargetType="Label">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Tablet="24"
+                                 Phone="18"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Tablet="24"
+                                 Phone="18"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="StackLayout">
+                <Setter Property="Spacing">
+                    <OnIdiom x:TypeArguments="x:Double">
+                        <OnIdiom.Phone>10</OnIdiom.Phone>
+                        <OnIdiom.Tablet>20</OnIdiom.Tablet>
+                    </OnIdiom>
+                </Setter>
+            </Style>
+              
+
 
         </ResourceDictionary>
     </Application.Resources>

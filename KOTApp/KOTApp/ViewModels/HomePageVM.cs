@@ -3,6 +3,8 @@ using KOTApp.Interfaces;
 using KOTApp.SQLiteAccess;
 using KOTApp.Views;
 using KOTApp.Views.KOT;
+using KOTApp.Views.KOTMemo;
+using KOTApp.Views.TableTransfer;
 using KOTAppClassLibrary.Models;
 using Newtonsoft.Json;
 using System;
@@ -56,97 +58,112 @@ namespace KOTApp.ViewModels
 
         public async void ExecuteMenuCommand(string index)
         {
-            if(index == "1")
+            try
             {
-                IsLoading = true;
-                LoadingMessage = "Please Wait, Checking pending KOT";
-                var res = await TableDataConnection.CheckPendingKOT();
-                LoadingMessage = "Please Wait, Checking Tables";
-                if(res == "0")
+                if (index == "1")
                 {
-
-                    var functionResponse = await TableDataConnection.GetTable();
-                    if(functionResponse.status == "ok")
-                    {
-                        Helpers.Constants.TableList = functionResponse.result as List<TableDetail>;
-                    }
-                    else
-                    {
-                        Helpers.Constants.TableList = new List<TableDetail>(); 
-                    }
-
-                    var packedResponse = await TableDataConnection.GetTableNo();
-                    if(packedResponse.status == "ok")
-                    {
-                        Helpers.Constants.PackedTableList = packedResponse.result as List<TableDetail>;
-                    }
-                    else
-                    {
-                        Helpers.Constants.PackedTableList = new List<TableDetail>();
-                    }
-
-                    IsLoading = false;
-                    if(Helpers.Constants.TableList.Count > 0)
-                    {
-                        await App.Current.MainPage.Navigation.PushAsync(new ChooseTablePage());
-                    }
-                    else
-                    {
-                        DependencyService.Get<IMessage>().ShortAlert("No Tables available.");
-                    }
-                   
+                    CommonForMemoAndTransfer(1);
                 }
-                else if(res == "1")
+
+                else if (index == "2")
                 {
-                    await App.Current.MainPage.DisplayAlert("KOT Pending", "Clear all the pending to start new KOT","Ok");
+                    CommonForMemoAndTransfer(2);
+                }
+
+                else if (index == "3")
+                {
+                    CommonForMemoAndTransfer(3);
+                }
+
+                else if (index == "4")
+                {
+                    var res = await App.Current.MainPage.DisplayAlert("Confirm", "Are you sure to Sync MenuItems?", "Yes", "No");
+                    if (res)
+                    {
+                        LoadingMessage = "Please Wait, MenuItems Loading";
+                        IsLoading = true; 
+                        var functionResponse = await LoadMenuItem.GetMenuItemAsync();
+                        if (functionResponse.status == "ok")
+                        {
+                            DependencyService.Get<IMessage>().ShortAlert("MenuItems synced successfully");
+                            MenuItemsList = JsonConvert.DeserializeObject<List<KOTAppClassLibrary.Models.MenuItem>>(functionResponse.result.ToString());
+                            Helpers.Data.MenuItemsList = MenuItemsList;
+                            MenuItemsAccess.SaveList(App.DatabaseLocation, MenuItemsList);
+                        }
+                        else
+                        {
+                            DependencyService.Get<IMessage>().ShortAlert("Couldnot sync: " + functionResponse.Message);
+                        }
+                        IsLoading = false;
+
+                    }
+                }
+
+                else if (index == "5")
+                {
+                    var res = await App.Current.MainPage.DisplayAlert("Confirm", "Are you sure to log Out?", "Yes", "No");
+                    if (res)
+                    {
+                        LoginUser.DeleteUserAndIP(App.DatabaseLocation);
+                        App.Current.MainPage = new LoginPage();
+                    }
+
+                }
+            }catch(Exception e)
+            {
+                IsLoading = false;
+                DependencyService.Get<IMessage>().ShortAlert("Error: " + e.Message);                
+            }
+
+        }
+        
+        public async void  CommonForMemoAndTransfer(int index)
+        {
+            LoadingMessage = "Please Wait, Checking pending KOT";
+            IsLoading = true;
+            var res = await TableDataAccess.CheckPendingKOTAsync();
+            if (res == "0")
+            {
+                var functionResponse = await TableDataAccess.GetTableAsync();
+                if (functionResponse.status == "ok")
+                {
+                    var list = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
+                    Helpers.Data.TableList = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
                 }
                 else
                 {
-                    DependencyService.Get<IMessage>().ShortAlert("Cannot Connect to Server.");
+                    Helpers.Data.TableList = new List<TableDetail>();
                 }
                 IsLoading = false;
-            }
-            else if(index == "2")
-            {
-
-            }
-            else if(index == "3")
-            {
-
-            }
-            else if (index == "4")
-            {
-                var res = await App.Current.MainPage.DisplayAlert("Confirm", "Are you sure to Sync MenuItems?", "Yes", "No");
-                if (res)
+                if (Helpers.Data.TableList.Count > 0)
                 {
-                    IsLoading = true;
-                    var functionResponse = await LoadMenuItem.GetMenuItemAsync();
-                    if(functionResponse.status == "ok")
+                    if(index == 1)
                     {
-                        DependencyService.Get<IMessage>().ShortAlert("MenuItems synced successfully");
-                        MenuItemsList = JsonConvert.DeserializeObject<List<KOTAppClassLibrary.Models.MenuItem>>(functionResponse.result.ToString());
-                        Helpers.Constants.MenuItemsList = MenuItemsList;
-                        SaveMenuItems.SaveList(App.DatabaseLocation, MenuItemsList);
+                        await App.Current.MainPage.Navigation.PushAsync(new ChooseTablePage());
                     }
-                    else
+                    else if(index == 2)
                     {
-                        DependencyService.Get<IMessage>().ShortAlert("Couldnot sync: " + functionResponse.Message);
+                        await App.Current.MainPage.Navigation.PushAsync(new TableViewPage());
                     }
-                    IsLoading = false;
-
+                    else if(index == 3)
+                    {
+                        await App.Current.MainPage.Navigation.PushAsync(new TransferTablePage());
+                    }
+                }
+                else
+                {
+                    DependencyService.Get<IMessage>().ShortAlert("No Tables available.");
                 }
             }
-            else if(index == "5")
+            else if (res == "1")
             {
-                var res = await App.Current.MainPage.DisplayAlert("Confirm","Are you sure to log Out?","Yes", "No");
-                if(res)
-                {
-                    LoginUser.DeleteUserAndIP(App.DatabaseLocation);
-                    App.Current.MainPage = new LoginPage();
-                }
-
+                await App.Current.MainPage.DisplayAlert("KOT Pending", "Clear all the pending to start new KOT", "Ok");
             }
-
+            else
+            {
+                DependencyService.Get<IMessage>().ShortAlert("Cannot Connect to Server.");
+            }
+            IsLoading = false;
         }
     }
 }

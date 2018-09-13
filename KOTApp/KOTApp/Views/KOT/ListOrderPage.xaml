@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KOTApp.Views.KOT.ListOrderPage"
+             xmlns:con="clr-namespace:KOTApp.Converters"
+             Title="Ordering Details">
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+            <con:ZeroConverter x:Key="ZC"/>
+            <con:ColorChangeConverter x:Key="CCC"/>
+            <Style TargetType="Button" >
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="24"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="Green"/>
+            </Style>
+
+            <Style TargetType="Label" >
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="22"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Tablet="24"
+                                 Phone="18"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="SmallLabel">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="14"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+
+            <Style TargetType="Switch">
+                <Setter Property="Scale" >
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="0.5"
+                                 Tablet="0.9"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="Margin" >
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="0"
+                                 Tablet="2"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+            <Grid>
+                <StackLayout VerticalOptions="FillAndExpand">
+                    <Grid VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="TitleGrid"
+                                  Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0"
+                          Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0"
+                                Text="New KOT"
+                                Command="{Binding KOTCommand}"
+                                CommandParameter="1"
+                                BackgroundColor="Green"/>
+
+                                <Label Grid.Column="1"
+                               VerticalOptions="Center"
+                               Text="Table No:"
+                               Margin="5,0"/>
+                                <Label Grid.Column="2"
+                               VerticalOptions="Center"
+                               HorizontalTextAlignment="Start"
+                               HorizontalOptions="Start"
+                               Text="{Binding SelectedTable.TableNo}"
+                               TextColor="Red"/>
+
+                                <Button Grid.Column="3"
+                                Command="{Binding KOTCommand}"
+                                CommandParameter="2"
+                                BackgroundColor="Green"
+                                Text="Save KOT"/>
+                            </Grid>                        
+
+                            <BoxView Grid.Row="2" Margin="0,5"
+                                         BackgroundColor="Red"                                     
+                                         HeightRequest="2"/>
+                        </Grid>
+
+                        <StackLayout Grid.Row="1" VerticalOptions="FillAndExpand">
+
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="Items"
+                                   HorizontalOptions="Center"
+                                   Grid.Column="0"
+                                   FontAttributes="Bold"/>
+                            <Label Text="Qty"
+                                   Grid.Column="1"
+                                   FontAttributes="Bold"/>
+                            <Label Text="Order"
+                                   HorizontalOptions="Center"
+                                   Grid.Column="2"
+                                   FontAttributes="Bold"/>
+                            
+                        </Grid>
+
+                        <ListView ItemsSource="{Binding OrderItemsList}"   
+                                  ItemSelected="MenuItemSelected"
+                                      SelectedItem="{Binding SelectedOrderItem}"
+                                  x:Name="OrderItemsLV"
+                                  HasUnevenRows="True"                                                  
+                                  SeparatorVisibility="None" 
+                                    
+                                  VerticalOptions="FillAndExpand">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Margin="5" >
+                                                <Frame BackgroundColor="{Binding SNO,Converter={StaticResource CCC}}"
+                                                   Padding="5" >
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="5*"/>
+                                                            <ColumnDefinition Width="2*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Text="{Binding ItemDesc}"
+                                                           Grid.Column="0"
+                                                           TextColor="White"/>
+                                                        <Label Text="{Binding Quantity}"
+                                                           Grid.Column="1"
+                                                           TextColor="White"/>
+                                                        <Button Text="-"
+                                                            TextColor="White"
+                                                            BackgroundColor="Green"
+                                                            Command="{Binding Path=BindingContext.DecCommand, Source={x:Reference Name=OrderItemsLV}}"
+                                                            CommandParameter="{Binding .}" Grid.Column="2"/>
+                                                        <Label Text="{Binding OrderSNO}"
+                                                               Grid.Column="3"
+                                                               TextColor="White"/>
+                                                        <Button Text="+"
+                                                            TextColor="White"
+                                                            BackgroundColor="Green"
+                                                            Command="{Binding Path=BindingContext.IncCommand, Source={x:Reference Name=OrderItemsLV}}"
+                                                            CommandParameter="{Binding .}" Grid.Column="4"/>
+                                                    </Grid>
+                                                </Frame>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+
+                <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
+                              HorizontalOptions="Center"
+                              VerticalOptions="Center">
+                    <Frame OutlineColor="Black"
+                                    CornerRadius="10"
+                                    Padding="20"
+                                    BackgroundColor="White">
+                        <StackLayout Orientation="Vertical">
+                            <ActivityIndicator IsRunning="{Binding IsLoading}" />
+                            <Label Text="{Binding LoadingMessage}"
+                                           TextColor="Black"
+                                           FontAttributes="Bold"
+                                           FontSize="Medium"/>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid IsVisible="{Binding IsRemarks}"
+                  Margin="0"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand"
+                  BackgroundColor="Transparent">
+                    <Frame OutlineColor="Black"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       CornerRadius="10"
+                       Padding="20"
+                       BackgroundColor="LightCyan">
+                        <StackLayout Orientation="Vertical">
+                            <Frame OutlineColor="Red"
+                               CornerRadius="10"
+                                   Padding="0">
+                                <Label Text="Enter Remarks for this order"
+                                       HorizontalOptions="Center"
+                                       Margin="5"
+                                       TextColor="Red"/>
+                            </Frame>
+                            <Entry Placeholder="Enter Remarks" 
+                                   Text="{Binding SelectedOrderItem.Remarks}"
+                                   HorizontalOptions="FillAndExpand"/>
+                            <Button Text="Ok" Command="{Binding RemarksOkCommand}"/>
+                            <Button Text="Cancel" Command="{Binding BackCommand}"/>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+            </Grid>
+    </ContentPage.Content>
+</ContentPage>

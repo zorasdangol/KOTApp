@@ -10,94 +10,101 @@
     </ContentPage.Resources>
     
     <ContentPage.Content >
-        <ScrollView>
-            <Grid>
-                <Image Source="homeBackground.jpg" Aspect="AspectFill" Opacity="0.3" />
-                <StackLayout Opacity="1" >
-                    <Label Text="Welcome to KOT App!"
-                           FontSize="50"
+        <StackLayout>
+            <StackLayout.Spacing>                
+                <OnIdiom x:TypeArguments="x:Double">
+                    <OnIdiom.Phone>20</OnIdiom.Phone>
+                    <OnIdiom.Tablet>40</OnIdiom.Tablet>
+                </OnIdiom>
+            </StackLayout.Spacing>
+
+                <ScrollView VerticalOptions="FillAndExpand">
+               
+                    <Grid>
+
+                        <Image Source="homeBackground.jpg" Aspect="AspectFill" Opacity="0.3" />
+                        <StackLayout Opacity="1" >
+                            <Label Text="Welcome to KOT App!"
+                           FontSize="Large"
                            Margin="0,20"
                            TextColor="Black"
                            VerticalOptions="Start" 
                            HorizontalOptions="CenterAndExpand" />
-                    <StackLayout Orientation="Horizontal"
-                                 Margin="30">
-                        <Label Text="User Name:"
+                            <StackLayout Orientation="Horizontal"
+                                 Margin="10">
+                                <Label Text="User Name:"
                                Margin="0,0,0,0"
                                TextColor="Black"
                                VerticalOptions="Center"
                                FontAttributes="Bold"
-                               FontSize="30"/>
-                        <Label Text="{Binding User.UserName }"                   
+                               FontSize="Large"/>
+                                <Label Text="{Binding User.UserName }"                   
                                TextColor="Black"
                                VerticalOptions="Center"
                                Margin="20,0"
-                               FontSize="30"
+                               FontSize="Large"
                                />
-                    </StackLayout>
+                            </StackLayout>
 
-                    <StackLayout VerticalOptions="CenterAndExpand"
+                            <StackLayout VerticalOptions="CenterAndExpand"
                                  HorizontalOptions="FillAndExpand"
                                  Margin="20">
-                        
-                        <Button Text="KOT" 
-                                FontSize="40"
-                                Margin="0,10"
-                                TextColor="Black"    
-                                BackgroundColor="Transparent"
-                                Command="{Binding MenuCommand}"
-                                CommandParameter="1"/>
-                        <Button Text="KOT Memo"   
-                                FontSize="40"
-                                Margin="0,10"
-                                TextColor="Black"
-                                BackgroundColor="Transparent"
-                                Command="{Binding MenuCommand}"
-                                CommandParameter="2"/>
-                        <Button Text="Table Transfer" 
-                                FontSize="40"
-                                Margin="0,10"
-                                TextColor="Black"                      
-                                BackgroundColor="Transparent"
-                                Command="{Binding MenuCommand}"
-                                CommandParameter="3"/>
-                        <Button Text="Sync MenuItem"  
-                                FontSize="40"
-                                Margin="0,10"
-                                TextColor="Black"                    
-                                BackgroundColor="Transparent"
-                                Command="{Binding MenuCommand}"
-                                CommandParameter="4"/>
 
-                       
-                            <Button Text="LogOut"  
-                                FontSize="40"
-                                Margin="0,10"
-                                TextColor="Black"                   
-                                BackgroundColor="Transparent"
-                                Command="{Binding MenuCommand}"
-                                CommandParameter="5"/>
-                        
-                    </StackLayout>
-                </StackLayout>
-                
-                <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
+                            <Button Text="KOT" 
+                                        Margin="0,10"
+                                        TextColor="Black" 
+                                        BackgroundColor="Green"
+                                        Command="{Binding MenuCommand}"
+                                        CommandParameter="1"/>
+                            <Button Text="KOT Memo"   
+                                        Margin="0,10"
+                                        TextColor="Black"
+                                        BackgroundColor="Green"
+                                        Command="{Binding MenuCommand}"
+                                        CommandParameter="2"/>
+                                <Button Text="Table Transfer" 
+                                        Margin="0,10"
+                                        TextColor="Black"                      
+                                        BackgroundColor="Green"
+                                        Command="{Binding MenuCommand}"
+                                        CommandParameter="3"/>
+                                <Button Text="Sync MenuItem"  
+                                        Margin="0,10"
+                                        TextColor="Black"                    
+                                        BackgroundColor="Green"
+                                        Command="{Binding MenuCommand}"
+                                        CommandParameter="4"/>
+
+                                <Button Text="LogOut"  
+                                        Margin="0,10"
+                                        TextColor="Black"                   
+                                        BackgroundColor="Green"
+                                        Command="{Binding MenuCommand}"
+                                        CommandParameter="5"/>
+
+                            </StackLayout>
+                        </StackLayout>
+
+                        <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
                       HorizontalOptions="Center"
                      VerticalOptions="Center">
-                    <Frame OutlineColor="Black"
+                            <Frame OutlineColor="Black"
                            CornerRadius="10"
-                           Padding="10"
+                           Padding="20"
                            BackgroundColor="White">
-                            <StackLayout Orientation="Vertical">
-                            <ActivityIndicator IsRunning="{Binding IsLoading}" />
-                            <Label Text="{Binding LoadingMessage}"
+                                <StackLayout Orientation="Vertical">
+                                    <ActivityIndicator IsRunning="{Binding IsLoading}" />
+                                    <Label Text="{Binding LoadingMessage}"
                                    TextColor="Black"
                                    FontAttributes="Bold"
-                                   FontSize="Large"/>
-                        </StackLayout>
-                    </Frame>
-                </Grid>
-            </Grid>
-        </ScrollView>
+                                   FontSize="Medium"/>
+                                </StackLayout>
+                            </Frame>
+                        </Grid>
+                    </Grid>
+                </ScrollView>
+           
+
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

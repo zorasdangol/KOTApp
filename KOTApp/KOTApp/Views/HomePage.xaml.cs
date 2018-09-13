@@ -1,4 +1,5 @@
-﻿using KOTApp.ViewModels;
+﻿using KOTApp.Interfaces;
+using KOTApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,27 @@ namespace KOTApp.Views
 	public partial class HomePage : ContentPage
 	{
         public HomePageVM viewModel { get; set; }
+        public bool BExit { get; set; }
 		public HomePage ()
 		{
 			InitializeComponent ();
+            BExit = true;
             BindingContext = viewModel = new HomePageVM();
 		}
-	}
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (BExit)
+            {
+                DependencyService.Get<IMessage>().ShortAlert("Press again to exit");
+                BExit = false;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+    }
 }

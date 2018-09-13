@@ -20,7 +20,7 @@ namespace KOTApp.DataAccessLayer
             return string.Format(Helpers.Constants.MainURL + Helpers.Constants.LoginURL);
         }
 
-        public static async Task<FunctionResponse> CheckAccess(User User)
+        public static async Task<FunctionResponse> CheckAccessAsync(User User)
         {
             try
             {

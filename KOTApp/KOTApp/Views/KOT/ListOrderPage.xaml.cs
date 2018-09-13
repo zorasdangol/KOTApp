@@ -10,17 +10,17 @@ using Xamarin.Forms.Xaml;
 namespace KOTApp.Views.KOT
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class KOTProdPage : MasterDetailPage
+	public partial class ListOrderPage : ContentPage
 	{
-		public KOTProdPage ()
+		public ListOrderPage ()
 		{
 			InitializeComponent ();
 		}
 
-        protected override bool OnBackButtonPressed()
+        public void MenuItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new ChooseTablePage());
-            return true;
+            var listview = sender as ListView;
+            listview.SelectedItem = null;
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="KOTApp.Views.KOT.ChooseTablePage"
+             x:Class="KOTApp.Views.TableTransfer.TransferTablePage"
              xmlns:con="clr-namespace:KOTApp.Converters"  
              xmlns:local="clr-namespace:KOTApp.Controls"
-             BackgroundColor="AntiqueWhite">
+             >
     <ContentPage.Resources>
         <ResourceDictionary>
             <con:TableColorConverter x:Key="TCC"/>
-            
+
             <Style x:Key="ButtonLV"  TargetType="Button">
                 <Setter Property="Margin" Value="0"/>
                 <Setter Property="TextColor" Value="WhiteSmoke"/>
@@ -19,43 +19,37 @@
                                  Phone="18"/>
 
                     </Setter.Value>
-                </Setter>
+                </Setter>              
+            </Style>
 
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="BackgroundColor" Value="Green"/>
+                <Setter Property="TextColor" Value="White"/>
             </Style>
 
             <Style x:Key="listView" TargetType="ListView">
                 <Setter Property="SeparatorVisibility" Value="None"/>
-                <!--<Setter Property="IsEnabled" Value="False"/>-->
                 <Setter Property="HasUnevenRows" Value="True"/>
                 <Setter Property="Margin" Value="5"/>
             </Style>
-            
-            
-            
+
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Order="Primary" 
                      Text="Refresh"                     
                      Icon="refresh.png"                     
                      Command="{Binding RefreshCommand}"/>
     </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <Grid>
             <StackLayout Margin="5">
-                <Label Text="Select Section:"
-                       FontAttributes="Bold"
-                       FontSize="Large"
-                       Margin="5"/>
-                <Picker ItemsSource="{Binding LayoutList}"
-                        Title="Select Section"
-                        SelectedItem="{Binding SelectedLayout}"
-                        Margin="5">                    
-                </Picker>
-                <ScrollView VerticalOptions="FillAndExpand">
-                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
-                    <ListView x:Name="listView1" 
+                <ScrollView>
+                    <StackLayout Orientation="Horizontal">
+                        <ListView x:Name="listView1" 
                               ItemsSource="{Binding TableListLeft}"
                               ItemSelected="MenuItemSelected"
                               Style="{StaticResource listView}">
@@ -64,34 +58,35 @@
                                     <ViewCell>
                                         <StackLayout Margin="5"
                                                      Padding="0">
-                                          
+
                                             <Button Text="{Binding TableNo}"  
                                                         Style="{StaticResource ButtonLV}"
                                                         BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
                                                         Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView1}}"
                                                         CommandParameter="{Binding TableNo}"/>
-                                           
+
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                                                
-                    <ListView x:Name="listView2" 
+
+
+                        <ListView x:Name="listView2" 
                               ItemsSource="{Binding TableListRight}"                              
                               ItemSelected="MenuItemSelected"
-                              Style="{StaticResource listView}">                        
+                              Style="{StaticResource listView}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
                                         <StackLayout Margin="5"
-                                                     Padding="0">                                           
+                                                     Padding="0">
                                             <Button Text="{Binding TableNo}"                                                     
                                                         Style="{StaticResource ButtonLV}"
                                                         BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
                                                         Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView2}}"
                                                         CommandParameter="{Binding TableNo}"/>
-                                     
+
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
@@ -99,10 +94,9 @@
                         </ListView>
                     </StackLayout>
                 </ScrollView>
-        </StackLayout>
+            </StackLayout>
 
-            <Grid x:Name="loadingOverlay" 
-                  IsVisible="{Binding IsLoading}"
+            <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
                 <Frame OutlineColor="Black"
@@ -117,6 +111,32 @@
                                TextColor="Black"
                                FontAttributes="Bold"
                                FontSize="Medium"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+
+
+            <Grid x:Name="TransferOverLay" IsVisible="{Binding IsTransfer}"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Frame OutlineColor="Black"
+                       CornerRadius="10"
+                       Padding="20"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       BackgroundColor="White">
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="Choose Table to Transfer"
+                               TextColor="BlueViolet"/>
+                        <BoxView HeightRequest="2"
+                                 Margin="5"/>
+                        <Picker Title="Select Table No"
+                                ItemsSource="{Binding EmptyTableList}"
+                                ItemDisplayBinding="{Binding TableNo}"
+                                SelectedItem="{Binding}"/>
+
+                        <Button Text="Ok"/>
+                        <Button Text="Cancel"/>
                     </StackLayout>
                 </Frame>
             </Grid>

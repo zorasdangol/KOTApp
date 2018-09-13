@@ -149,6 +149,7 @@ namespace KOTApp.ViewModels
         {
             try
             {
+                IsLoading = true;
                 User.UserName = UserName;
                 User.Password = Password;
                 User.ip1 = ip1;
@@ -166,8 +167,8 @@ namespace KOTApp.ViewModels
                 else
                 {
                     //DependencyService.Get<IMessage>().ShortAlert("Connecting to Server. Please Wait..");
-                    IsLoading = true;
-                    functionResponse = await LoginConnection.CheckAccess(User);
+                   
+                    functionResponse = await LoginConnection.CheckAccessAsync(User);
                     if (functionResponse.status == "ok")
                     {
                         Helpers.Constants.User = User;
@@ -177,8 +178,8 @@ namespace KOTApp.ViewModels
                         var menuitemResponse = await LoadMenuItem.GetMenuItemAsync();
                         if(menuitemResponse.status == "ok")
                         {
-                            Helpers.Constants.MenuItemsList = JsonConvert.DeserializeObject<List<KOTAppClassLibrary.Models.MenuItem>>(menuitemResponse.result.ToString());
-                            SaveMenuItems.SaveList(App.DatabaseLocation, Helpers.Constants.MenuItemsList);
+                            Helpers.Data.MenuItemsList = JsonConvert.DeserializeObject<List<KOTAppClassLibrary.Models.MenuItem>>(menuitemResponse.result.ToString());
+                            MenuItemsAccess.SaveList(App.DatabaseLocation, Helpers.Data.MenuItemsList);
                         }
 
                         DependencyService.Get<IMessage>().ShortAlert("Logged In Successfully");
@@ -193,6 +194,7 @@ namespace KOTApp.ViewModels
                 }
             }catch(Exception e)
             {
+                IsLoading = false;
                 DependencyService.Get<IMessage>().ShortAlert("Error::" + e.Message);
             }
         }

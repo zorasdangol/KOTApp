@@ -7,6 +7,9 @@ namespace KOTApp.Helpers
 {
     public class Constants
     {
+        public const decimal VAT = 13;
+        public const decimal ServiceCharge = 10;
+
         public static User User = new User()
         {
             UserName = "admin",
@@ -26,18 +29,26 @@ namespace KOTApp.Helpers
 
         public static string IPAddress = User.ip1 + "." + User.ip2 + "." + User.ip3 + "." + User.ip4 + ":" + User.Port ;
       
-        public static string MainURL = "http://" + IPAddress + "/ImsRms/api/";
+        public static string MainURL = "http://" + IPAddress + "/ImsRms/api/";        
 
-        public static string LoginURL = "userVerification";
-
-        public static List<MenuItem> MenuItemsList { get; set; }
-        public static List<TableDetail> TableList { get; set; }
-        public static List<TableDetail> PackedTableList { get; set; }
-
+        public static string LoginURL = "userVerification";   
         public static string MenuItemsURL = "getMenuItems";
-        public static string DayCloseTableURL = "GetTableDetails?DayCloseTable=1";
-        public static string GetTableURL = "GetTableDetails?GetTable=1";
-        public static string GetTableNoURL = "GetTableDetails?GetTableNo=1";
+
+        //public static string DayCloseTableURL = "GetTableDetails?DayCloseTable=1";
+        public static string DayCloseTableURL = "GetDayCloseTable?";
+
+        //public static string GetTableURL = "GetTableDetails?GetTable=1";
+        public static string GetTableURL = "GetTable?";
+
+        //public static string GetPackedTableURL = "GetTableDetails?GetPackedTable=1";
+        public static string GetPackedTableURL = "GetPackedTable?";
+
+        //public static string GetTableDetailsURL = "GetTableDetails?TableNo={0}";
+        public static string GetTableItemsDetailsURL = "GetTableItemsDetail?TableNo={0}";
+
+        //public static string SaveKOTProdListURL = "GetTableDetails?TableNo={0},transferData={1},TRNUSER={2},PAX={3}";
+
+        public static string SaveKOTProdListURL = "GetTableDetails?";
 
         public static void SetMainURL(User User)
         {

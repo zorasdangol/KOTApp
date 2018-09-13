@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="KOTApp.Views.KOT.KOTProdTabbedPage"
+                  xmlns:local="clr-namespace:KOTApp.Views.KOT"
+                  xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+                  IsGestureEnabled="true"
+                  MasterBehavior="Popover">
+    <MasterDetailPage.Master>
+        <ContentPage Title="&lt; Menu" 
+                     x:Name="MasterPage"
+                     BackgroundColor="#7f848c">
+         
+            <StackLayout>
+                <Label Text="Select Menu Items"
+                        FontAttributes="Bold"
+                        FontSize="Large"
+                        Margin="5,10"
+                        HorizontalOptions="CenterAndExpand"
+                        TextColor="White"/>
+                <BoxView Margin="0,5"
+                            HeightRequest="2"
+                            BackgroundColor="White"/>
+                <ListView ItemsSource="{Binding MasterMenuList}"
+                            SelectedItem="{Binding SelectedMasterMenu}"
+                            ItemSelected="Handle_ItemSelected"
+                            SeparatorColor="WhiteSmoke"
+                            HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Margin="5"
+                                                Orientation="Horizontal"
+                                                VerticalOptions="Center">
+                                    <Label Text="{Binding DESCA}"
+                                            FontSize="Large"
+                                            Margin="10,5"
+                                            TextColor="White"  
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Start"/>
+
+                                    <Label Text="{Binding ItemCount}"
+                                            FontSize="Small"
+                                            TextColor="WhiteSmoke"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="End"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>           
+          
+        </ContentPage>
+    </MasterDetailPage.Master>
+    
+    <MasterDetailPage.Detail>
+        <NavigationPage>
+            <x:Arguments>
+                <TabbedPage Padding="5">
+                     <local:KOTMainMenuPage BindingContext="{Binding Path=BindingContext, Source={x:Reference Name=MasterPage}}" />
+                     <local:KOTDetailPage  BindingContext="{Binding Path=BindingContext, Source={x:Reference Name=MasterPage}}" />
+                    <local:ListOrderPage BindingContext="{Binding Path=BindingContext, Source={x:Reference Name=MasterPage}}"/>
+                </TabbedPage>
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
+</MasterDetailPage>

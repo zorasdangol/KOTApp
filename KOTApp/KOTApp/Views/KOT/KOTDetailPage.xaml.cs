@@ -11,26 +11,31 @@ using Xamarin.Forms.Xaml;
 namespace KOTApp.Views.KOT
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ChooseTablePage : ContentPage
+	public partial class KOTDetailPage : ContentPage
 	{
-        public ChooseTablePageVM viewModel { get; set; }
-		public ChooseTablePage ()
+        //public KOTDetailPageVM viewModel { get; set; }
+		public KOTDetailPage ()
 		{
 			InitializeComponent ();
-            BindingContext = viewModel = new ChooseTablePageVM();
+           // BindingContext = viewModel = new KOTDetailPageVM();
 		}
+
+        protected override void OnAppearing()
+        {
+            //viewModel.RefreshOrderList();
+        }
 
         public void MenuItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
             var listview = sender as ListView;
-            listView1.SelectedItem = null;
-            listView2.SelectedItem = null;
+            listview.SelectedItem = null;
         }
 
-        protected override void OnAppearing()
+        protected override bool OnBackButtonPressed()
         {
-            viewModel.ExecuteRefreshCommand();
+           return true;
         }
-
     }
+
+    
 }

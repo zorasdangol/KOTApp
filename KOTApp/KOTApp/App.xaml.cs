@@ -1,6 +1,10 @@
 ﻿
+using KOTApp.DataAccessLayer;
+using KOTApp.Interfaces;
 using KOTApp.SQLiteAccess;
 using KOTApp.Views;
+using KOTAppClassLibrary.DataValidationLayer;
+using KOTAppClassLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,18 +26,47 @@ namespace KOTApp
 		}
 
         public App(string databaseLocation)
-        {
-            InitializeComponent();
+        {            
 
+            InitializeComponent();           
 
             DatabaseLocation = databaseLocation;
 
-            var res = LoginUser.LoadUserAndIP(App.DatabaseLocation);
+            CheckLoggedInAsync();           
+        }
 
+        private async void CheckLoggedInAsync()
+        {
+            var res = LoginUser.LoadUserAndIP(App.DatabaseLocation);
             if (res)
-                MainPage = new NavigationPage(new HomePage());
+            {
+                var User = Helpers.Constants.User;
+                var functionResponse = UserValidator.CheckUser(User);
+                if (functionResponse.status == "error")
+                {
+                    DependencyService.Get<IMessage>().ShortAlert(functionResponse.Message);
+                }
+                else
+                {
+                    //functionResponse = await LoginConnection.CheckAccessAsync(User);
+                    //if (functionResponse.status == "ok")
+                    //{
+                    //    Helpers.Data.MenuItemsList = MenuItemsAccess.LoadList(App.DatabaseLocation);
+                    //    MainPage = new NavigationPage(new HomePage());
+                    //}
+                    //else
+                    //{
+                    //    DependencyService.Get<IMessage>().ShortAlert(functionResponse.Message);
+                    //    MainPage = new LoginPage();
+                    //}
+
+                    MainPage = new LoginPage();
+
+                }                
+            }
             else
                 MainPage = new LoginPage();
+
         }
 
         protected override void OnStart ()
