@@ -14,10 +14,11 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Phone="14"
-                                 Tablet="24"/>
+                                 Tablet="28"/>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="BackgroundColor" Value="Green"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource greenColor}"/>
+                <Setter Property="TextColor" Value="White"/>
 
             </Style>
 
@@ -39,7 +40,7 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Tablet="24"
-                                 Phone="18"/>
+                                 Phone="14"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="HorizontalOptions" Value="Center"/>
@@ -107,8 +108,7 @@
                         <Button Grid.Column="0"
                                 Text="New KOT"
                                 Command="{Binding KOTCommand}"
-                                CommandParameter="1"
-                                BackgroundColor="Green"/>
+                                CommandParameter="1"/>
 
                         <Label Grid.Column="1"
                                VerticalOptions="Center"
@@ -209,7 +209,8 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
+                                                    <!--<ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>-->
                                                 </Grid.ColumnDefinitions>
                                                 <Label Text="{Binding DESCA}"
                                                        Grid.Column="0"/>
@@ -218,13 +219,16 @@
                                                        TextColor="Red"
                                                        />
 
-                                                <Button Text="+"                                                        
-                                                        BackgroundColor="Green"                                                        
+                                                <Label Text="{Binding SetQuantity}"
+                                                       Grid.Column="2"
+                                                       TextColor="White"/>
+
+                                                <Button Text="+"                                                                        
                                                         Command="{Binding Path=BindingContext.IncreaseOrderCommand, Source={x:Reference Name=SubMenuLV1}}"
                                                         CommandParameter="{Binding .}"
-                                                        Grid.Column="2"/>
+                                                        Grid.Column="3"/>
 
-                                                <Entry Text="{Binding SetQuantity,Mode=TwoWay,Converter={StaticResource ZC}}"
+                                                <!--<Entry Text="{Binding SetQuantity,Mode=TwoWay,Converter={StaticResource ZC}}"
                                                        Placeholder="0.0"
                                                        PlaceholderColor="LightGray"
                                                        Keyboard="Numeric"
@@ -232,7 +236,7 @@
                                                 <Button Text="Order"
                                                         BackgroundColor="Green"                                                        
                                                         Command="{Binding Path=BindingContext.OrderCommand, Source={x:Reference Name=SubMenuLV1}}"
-                                                        CommandParameter="{Binding .}" Grid.Column="4"/>
+                                                        CommandParameter="{Binding .}" Grid.Column="4"/>-->
 
                                                 <!--<Button Text="Cancel"                                                        
                                                         BackgroundColor="Green" 
@@ -248,14 +252,20 @@
                     </ListView>
                 </StackLayout>
             </Grid>
-            
+
             <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
-                              HorizontalOptions="Center"
-                              VerticalOptions="Center">
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
                 <Frame OutlineColor="Black"
                        CornerRadius="10"
                        Margin="40"                       
                        Padding="20"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
                        BackgroundColor="White">
                     <StackLayout Orientation="Vertical">
                         <ActivityIndicator IsRunning="{Binding IsLoading}" />
@@ -270,6 +280,10 @@
             <Grid IsVisible="{Binding IsPax}"
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
                 <Frame OutlineColor="Black"
                        CornerRadius="10"
                        Margin="40"                       

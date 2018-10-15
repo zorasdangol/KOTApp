@@ -1,6 +1,4 @@
-﻿using KOTApp.Helpers;
-using KOTApp.Interfaces;
-using KOTApp.ViewModels.KOT;
+﻿using KOTApp.ViewModels.TableTransfer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,60 +6,37 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.Xaml;
 
-namespace KOTApp.Views.KOT
+namespace KOTApp.Views.TableTransfer
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class KOTProdTabbedPage : MasterDetailPage
+	public partial class MergeTablePage : ContentPage
 	{
-        public KOTProdTabbedPageVM viewModel { get; set; }
-        public bool BExit { get; set; }
-
-
-        //private bool _BExit;
-        //public bool BExit
-        //{
-        //    get { return _BExit; }
-        //    set
-        //    {
-        //        _BExit = value;
-        //        OnBackButtonPressed();
-        //    }
-        //}
-
-		public KOTProdTabbedPage ()
+        public MergeTablePageVM viewModel { get; set; }
+		public MergeTablePage ()
 		{
 			InitializeComponent ();
-            BindingContext = viewModel = new KOTProdTabbedPageVM();
-            NavigationPage.SetHasNavigationBar(this,false);
-            BExit = true;
-        }
-
-        public async void Handle_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            var listView = sender as ListView;
-            IsPresented = false;
-        }
+            BindingContext = viewModel = new MergeTablePageVM();
+		}
 
         public void MenuItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
             var listview = sender as ListView;
-            listview.SelectedItem = null;            
+            listview.SelectedItem = null;
         }
 
         protected override bool OnBackButtonPressed()
         {
-            var res = Services.OnBackCheck(viewModel.IsLoading, viewModel.IsCancel, viewModel.IsPax);
-            if (res == true)
-            {
-                viewModel.IsLoading = false;
-                viewModel.IsCancel = false;
-                viewModel.IsPax = false;
-                return true;
-            }
-            else
+            //var res = Services.OnBackCheck(viewModel.IsLoading, viewModel.IsCancel, viewModel.IsPax);
+            //if (res == true)
+            //{
+            //    viewModel.IsLoading = false;
+            //    viewModel.IsCancel = false;
+            //    viewModel.IsPax = false;
+            //    return true;
+            //}
+            //else
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
@@ -84,9 +59,8 @@ namespace KOTApp.Views.KOT
                 }
                 );
                 return true;
-            }              
+            }
 
-        }    
-
+        }
     }
 }

@@ -20,7 +20,12 @@ namespace KOTApp.DataAccessLayer
             return string.Format(Helpers.Constants.MainURL + Helpers.Constants.LoginURL);
         }
 
-        public static async Task<FunctionResponse> CheckAccessAsync(User User)
+        public static string GenerateCheckAccessURL()
+        {
+            return string.Format(Helpers.Constants.MainURL + Helpers.Constants.CheckAccessURL);
+        }
+
+        public static async Task<FunctionResponse> UserVerficationAsync(User User)
         {
             try
             {
@@ -59,6 +64,47 @@ namespace KOTApp.DataAccessLayer
             }catch(Exception e)
             {
                 return new FunctionResponse() { status = "error", Message = "Cannot connect to Server"  };
+            }
+
+        }
+
+        public static async Task<string> CheckAccessAsync(User User)
+        {
+            try
+            {
+                //FunctionResponse functionResponse = new FunctionResponse();
+                var str = "";
+
+                var JsonObject = JsonConvert.SerializeObject(User);
+                string ContentType = "application/json"; // or application/xml
+
+                String url = GenerateCheckAccessURL();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    var response = await client.PostAsync(url, new StringContent(JsonObject.ToString(), Encoding.UTF8, ContentType));
+
+                    var json = await response.Content.ReadAsStringAsync();
+
+                    //var result = JsonConvert.DeserializeObject<string>(json);
+                    if (json == "1")
+                    {
+                        str = "Success";
+                    }
+                    else if (json == "0")
+                    {
+                        str = "User doesnot have authorization.";                       
+                    }
+                    else
+                    {
+                        str = "Incorrect UserName or Password";
+                    }
+                    return str;
+                }
+            }
+            catch (Exception e)
+            {
+                return "Cannot Connect to Server";
             }
 
         }

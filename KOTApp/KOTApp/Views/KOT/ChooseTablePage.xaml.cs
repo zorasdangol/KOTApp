@@ -23,13 +23,13 @@ namespace KOTApp.Views.KOT
         public void MenuItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
             var listview = sender as ListView;
-            listView1.SelectedItem = null;
-            listView2.SelectedItem = null;
+            listview.SelectedItem = null;
         }
 
         protected override void OnAppearing()
         {
             viewModel.ExecuteRefreshCommand();
+            base.OnAppearing();
         }
 
     }

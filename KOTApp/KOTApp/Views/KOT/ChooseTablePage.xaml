@@ -4,7 +4,7 @@
              x:Class="KOTApp.Views.KOT.ChooseTablePage"
              xmlns:con="clr-namespace:KOTApp.Converters"  
              xmlns:local="clr-namespace:KOTApp.Controls"
-             BackgroundColor="AntiqueWhite">
+             BackgroundColor="Black">
     <ContentPage.Resources>
         <ResourceDictionary>
             <con:TableColorConverter x:Key="TCC"/>
@@ -16,7 +16,7 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Tablet="30"                                
-                                 Phone="18"/>
+                                 Phone="14"/>
 
                     </Setter.Value>
                 </Setter>
@@ -30,8 +30,6 @@
                 <Setter Property="Margin" Value="5"/>
             </Style>
             
-            
-            
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -43,71 +41,111 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
-            <StackLayout Margin="5">
-                <Label Text="Select Section:"
-                       FontAttributes="Bold"
-                       FontSize="Large"
-                       Margin="5"/>
-                <Picker ItemsSource="{Binding LayoutList}"
-                        Title="Select Section"
-                        SelectedItem="{Binding SelectedLayout}"
-                        Margin="5">                    
-                </Picker>
-                <ScrollView VerticalOptions="FillAndExpand">
-                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
-                    <ListView x:Name="listView1" 
-                              ItemsSource="{Binding TableListLeft}"
-                              ItemSelected="MenuItemSelected"
-                              Style="{StaticResource listView}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Margin="5"
-                                                     Padding="0">
-                                          
-                                            <Button Text="{Binding TableNo}"  
-                                                        Style="{StaticResource ButtonLV}"
-                                                        BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
-                                                        Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView1}}"
-                                                        CommandParameter="{Binding TableNo}"/>
-                                           
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                                                
-                    <ListView x:Name="listView2" 
-                              ItemsSource="{Binding TableListRight}"                              
-                              ItemSelected="MenuItemSelected"
-                              Style="{StaticResource listView}">                        
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Margin="5"
-                                                     Padding="0">                                           
-                                            <Button Text="{Binding TableNo}"                                                     
-                                                        Style="{StaticResource ButtonLV}"
-                                                        BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
-                                                        Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView2}}"
-                                                        CommandParameter="{Binding TableNo}"/>
-                                     
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+            <StackLayout Margin="10">
+                <Frame OutlineColor="AliceBlue"
+                       Margin="5"
+                       Padding="10">
+                    <StackLayout>
+                        <Label Text="Select Section:"
+                               FontAttributes="Bold"
+                               TextColor="Black"
+                               FontSize="Large"
+                               Margin="5"/>
+                        <Picker ItemsSource="{Binding LayoutList}"
+                                Title="Select Section"
+                                HorizontalOptions="FillAndExpand"
+                                SelectedItem="{Binding SelectedLayout}"
+                                Margin="5"/>
                     </StackLayout>
-                </ScrollView>
+                </Frame>
+
+                <BoxView BackgroundColor="Red"
+                     HeightRequest="2"
+                     Margin="3"/>
+                
+                <Frame OutlineColor="Black"
+                       Margin="5,0"
+                       Padding="5"
+                       VerticalOptions="FillAndExpand"
+                       CornerRadius="10">
+                    <ScrollView VerticalOptions="FillAndExpand">
+                        <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
+                            <ListView x:Name="listView1" 
+                                      ItemsSource="{Binding TableListLeft}"
+                                      ItemSelected="MenuItemSelected"
+                                      Style="{StaticResource listView}">
+                               
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Margin="5"
+                                                     Padding="0">
+                                                <Button Text="{Binding TableNo}" 
+                                                        Style="{StaticResource ButtonLV}"
+                                                        BackgroundColor="{Binding IsPacked, Converter= {StaticResource TCC} }"
+                                                        Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView1}}"
+                                                        CommandParameter="{Binding TableNo}">
+                                                    <!--<Button.Triggers>
+                                                        <DataTrigger TargetType="Button" Binding="{Binding IsPacked}" Value="true">
+                                                            <Setter Property="BackgroundColor" Value="Red"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Button" Binding="{Binding IsPacked}" Value="false">
+                                                            <Setter Property="BackgroundColor" Value="Green"/>
+                                                        </DataTrigger>
+                                                    </Button.Triggers>-->
+                                                </Button>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+                            <ListView x:Name="listView2" 
+                                      ItemsSource="{Binding TableListRight}"                              
+                                      ItemSelected="MenuItemSelected"
+                                      Style="{StaticResource listView}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Margin="5"
+                                                     Padding="0">
+                                                <Button Text="{Binding TableNo}"   
+                                                        Style="{StaticResource ButtonLV}"
+                                                        BackgroundColor="{Binding IsPacked,Converter= {StaticResource TCC}}"
+                                                        Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView2}}"
+                                                        CommandParameter="{Binding TableNo}">
+                                                    <!--<Button.Triggers>
+                                                        <DataTrigger TargetType="Button" Binding="{Binding IsPacked}" Value="true">
+                                                            <Setter Property="BackgroundColor" Value="Red"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Button" Binding="{Binding IsPacked}" Value="false">
+                                                            <Setter Property="BackgroundColor" Value="Green"/>
+                                                        </DataTrigger>
+                                                    </Button.Triggers>-->
+                                                </Button>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+                    </ScrollView>
+                </Frame>                      
+               
         </StackLayout>
 
             <Grid x:Name="loadingOverlay" 
                   IsVisible="{Binding IsLoading}"
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
                 <Frame OutlineColor="Black"
                        CornerRadius="10"
                        Padding="20"
+                       Margin="10"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
                        BackgroundColor="White">

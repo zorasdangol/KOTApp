@@ -4,6 +4,7 @@
              x:Class="KOTApp.Views.KOTMemo.TableViewPage"
              xmlns:con="clr-namespace:KOTApp.Converters"  
              xmlns:local="clr-namespace:KOTApp.Controls"
+             BackgroundColor="DarkSlateGray"
              >
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -16,7 +17,7 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Tablet="28"                                
-                                 Phone="18"/>
+                                 Phone="14"/>
 
                     </Setter.Value>
                 </Setter>
@@ -41,59 +42,85 @@
     
     <ContentPage.Content>
         <Grid>
-            <StackLayout Margin="5">                
-                <ScrollView VerticalOptions="FillAndExpand">
-                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
-                        <ListView x:Name="listView1" 
+            <StackLayout Margin="5">
+                <Frame OutlineColor="AliceBlue"
+                       Margin="5,5,5,0"
+                       Padding="10">
+                    <StackLayout>
+                        <Label Text="Select Table"
+                               HorizontalOptions="CenterAndExpand"
+                               FontAttributes="Bold"
+                               TextColor="Black"
+                               FontSize="Large"/>                      
+                    </StackLayout>
+                </Frame>
+
+                <BoxView BackgroundColor="Red"
+                     HeightRequest="2"
+                     Margin="1"/>
+                
+                <Frame OutlineColor="Black"
+                       Margin="5,0"
+                       Padding="5"
+                       VerticalOptions="FillAndExpand"
+                       CornerRadius="10">
+                    <ScrollView VerticalOptions="FillAndExpand">
+                        <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
+                            <ListView x:Name="listView1" 
                               ItemsSource="{Binding TableListLeft}"
                               ItemSelected="MenuItemSelected"
                               Style="{StaticResource listView}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Margin="5"
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Margin="5"
                                                      Padding="0">
 
-                                            <Button Text="{Binding TableNo}"  
+                                                <Button Text="{Binding TableNo}"  
                                                         Style="{StaticResource ButtonLV}"
                                                         BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
                                                         Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView1}}"
                                                         CommandParameter="{Binding TableNo}"/>
 
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
 
 
-                        <ListView x:Name="listView2" 
+                            <ListView x:Name="listView2" 
                               ItemsSource="{Binding TableListRight}"                              
                               ItemSelected="MenuItemSelected"
                               Style="{StaticResource listView}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Margin="5"
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Margin="5"
                                                      Padding="0">
-                                            <Button Text="{Binding TableNo}"                                                     
+                                                <Button Text="{Binding TableNo}"                                                     
                                                         Style="{StaticResource ButtonLV}"
                                                         BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
                                                         Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView2}}"
                                                         CommandParameter="{Binding TableNo}"/>
 
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackLayout>
-                </ScrollView>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+                    </ScrollView>
+                </Frame>
             </StackLayout>
 
             <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
                 <Frame OutlineColor="Black"
                        CornerRadius="10"
                        Padding="20"

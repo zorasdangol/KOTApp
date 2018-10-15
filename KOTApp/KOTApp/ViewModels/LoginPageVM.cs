@@ -168,7 +168,7 @@ namespace KOTApp.ViewModels
                 {
                     //DependencyService.Get<IMessage>().ShortAlert("Connecting to Server. Please Wait..");
                    
-                    functionResponse = await LoginConnection.CheckAccessAsync(User);
+                    functionResponse = await LoginConnection.UserVerficationAsync(User);
                     if (functionResponse.status == "ok")
                     {
                         Helpers.Constants.User = User;

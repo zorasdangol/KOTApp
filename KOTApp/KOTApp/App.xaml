@@ -9,18 +9,21 @@
 
         <ResourceDictionary>
             <Color x:Key="orangeColor">#ffb700</Color>
-            <Color x:Key="greenColor">#466d1d</Color>
+            <Color x:Key="greenColor">#044c1e</Color>
             <Color x:Key="lightGreenColor">#90ee90</Color>
+            <Color x:Key="redColor">#7c0000</Color>
 
             <Style TargetType="Button">
                 <Setter Property="FontSize">                    
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
-                                 Tablet="24"
-                                 Phone="18"/>
+                                 Tablet="28"
+                                 Phone="14"/>
                     </Setter.Value>
                 </Setter>
+                <Setter Property="BorderRadius" Value="10"/>
                 <Setter Property="TextColor" Value="White"/>
+                <!--<Setter Property="BackgroundColor" Value="{StaticResource greenColor}"/>-->
             </Style>
 
             <Style TargetType="Label">
@@ -28,7 +31,7 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Tablet="24"
-                                 Phone="18"/>
+                                 Phone="14"/>
                     </Setter.Value>
                 </Setter>
             </Style>
@@ -38,7 +41,7 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Tablet="24"
-                                 Phone="18"/>
+                                 Phone="14"/>
                     </Setter.Value>
                 </Setter>
             </Style>

@@ -9,6 +9,8 @@ using System.ComponentModel;
 using Android.Widget;
 using KOTApp.Views;
 using KOTApp.Views.KOT;
+using KOTApp.Views.KOTMemo;
+using KOTApp.Views.TableTransfer;
 
 [assembly: ExportRenderer(typeof(NavigationPage), typeof(CustomNavigationRenderer))]
 namespace KOTApp.Droid.Renderers
@@ -41,15 +43,29 @@ namespace KOTApp.Droid.Renderers
             {
                 toolbar_title.Text = "RMS";
             }
-            else if(CurrentPage is ChooseTablePage)
+            else if (CurrentPage is ChooseTablePage)
             {
-                toolbar_title.Text="Choose Table View";
+                toolbar_title.Text = "Choose Table View";
             }
 
-            else if(CurrentPage is KOTProdTabbedPage)
+            else if (CurrentPage is KOTProdTabbedPage)
             {
-                toolbarIcon =  null;
+                toolbarIcon = null;
                 toolbar_title.Text = "Items";
+            }
+
+            else if (CurrentPage is TableViewPage)
+            {
+                toolbar_title.Text = "Table View";
+            }
+            else if(CurrentPage is PreBillPage)
+            {
+                toolbar_title.Text = "Pre-Bill View";
+            }
+            else if(CurrentPage is TransferTablePage)
+            {
+                toolbar_title.Text = "Transfer Table";
+
             }
 
 

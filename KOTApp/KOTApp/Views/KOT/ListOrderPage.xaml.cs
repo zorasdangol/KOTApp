@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KOTApp.ViewModels.KOT;
+using KOTAppClassLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,5 +24,12 @@ namespace KOTApp.Views.KOT
             var listview = sender as ListView;
             listview.SelectedItem = null;
         }
+
+        //public void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
+        //{
+        //    var lv = sender as ListView;
+        //    var order = e.Item as KOTProd;
+            
+        //}
     }
 }

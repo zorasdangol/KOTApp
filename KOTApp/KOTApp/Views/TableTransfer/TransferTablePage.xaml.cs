@@ -1,4 +1,5 @@
-﻿using KOTApp.ViewModels.TableTransfer;
+﻿using KOTApp.Helpers;
+using KOTApp.ViewModels.TableTransfer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,29 @@ namespace KOTApp.Views.TableTransfer
 		}
 
 
+        protected override void OnAppearing()
+        {
+            viewModel.ExecuteRefreshCommand();
+            base.OnAppearing();
+        }
+
         public void MenuItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
             var listview = sender as ListView;
             listview.SelectedItem = null;
+        }
+        protected override bool OnBackButtonPressed()
+        {
+            var res = Services.OnBackCheck(viewModel.IsLoading, viewModel.IsTransfer, viewModel.IsMerge);
+            if (res == true)
+            {
+                viewModel.IsLoading = false;
+                viewModel.IsTransfer = false;
+                viewModel.IsMerge = false;
+                return true;
+            }
+            return base.OnBackButtonPressed();
+
         }
     }
 }

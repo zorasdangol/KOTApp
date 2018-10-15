@@ -3,14 +3,20 @@
                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                   x:Class="KOTApp.Views.KOT.KOTProdTabbedPage"
                   xmlns:local="clr-namespace:KOTApp.Views.KOT"
+                  xmlns:con="clr-namespace:KOTApp.Converters"
                   xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
                   IsGestureEnabled="true"
                   MasterBehavior="Popover">
+    
     <MasterDetailPage.Master>
         <ContentPage Title="&lt; Menu" 
                      x:Name="MasterPage"
                      BackgroundColor="#7f848c">
-         
+            <ContentPage.Resources>
+                <ResourceDictionary>
+                    <con:ImageConverter x:Key="IC"/>
+                </ResourceDictionary>
+            </ContentPage.Resources>
             <StackLayout>
                 <Label Text="Select Menu Items"
                         FontAttributes="Bold"
@@ -32,6 +38,8 @@
                                 <StackLayout Margin="5"
                                                 Orientation="Horizontal"
                                                 VerticalOptions="Center">
+                                    <!--<Image Source="Food.png" IsVisible="{Binding IsBarItem,Converter={StaticResource IC},ConverterParameter=0}"/>
+                                    <Image Source="BarItem.png" IsVisible="{Binding IsBarItem,Converter={StaticResource IC},ConverterParameter=1}"/>-->
                                     <Label Text="{Binding DESCA}"
                                             FontSize="Large"
                                             Margin="10,5"

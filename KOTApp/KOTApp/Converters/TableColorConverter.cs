@@ -8,6 +8,7 @@ namespace KOTApp.Converters
 {
     public class TableColorConverter:IValueConverter
     {
+        static TableColorConverter Instance = new TableColorConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             try
@@ -16,16 +17,16 @@ namespace KOTApp.Converters
                 if (value == null) return false;
                 if ((bool)value)
                 {
-                    return "Red";
+                    return "#7c0000";
                 }
                 else
                 {
-                    return "Green";
+                    return "#044c1e";
                 }
             }
             catch 
             {
-                return "Green";
+                return Color.Green;
             }
         }
 

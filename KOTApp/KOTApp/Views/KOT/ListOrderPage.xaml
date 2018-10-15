@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KOTApp.Views.KOT.ListOrderPage"
              xmlns:con="clr-namespace:KOTApp.Converters"
-             Title="Ordering Details">
+             Title="Ordering Details"             
+             xmlns:local="clr-namespace:XamarinFormsBehaviors">
     <ContentPage.Resources>
 
         <ResourceDictionary>
@@ -14,11 +15,11 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Phone="14"
-                                 Tablet="24"/>
+                                 Tablet="28"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="TextColor" Value="White"/>
-                <Setter Property="BackgroundColor" Value="Green"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource greenColor}"/>
             </Style>
 
             <Style TargetType="Label" >
@@ -39,7 +40,7 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Tablet="24"
-                                 Phone="18"/>
+                                 Phone="14"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="HorizontalOptions" Value="Center"/>
@@ -107,8 +108,7 @@
                                 <Button Grid.Column="0"
                                 Text="New KOT"
                                 Command="{Binding KOTCommand}"
-                                CommandParameter="1"
-                                BackgroundColor="Green"/>
+                                CommandParameter="1"/>
 
                                 <Label Grid.Column="1"
                                VerticalOptions="Center"
@@ -124,7 +124,6 @@
                                 <Button Grid.Column="3"
                                 Command="{Binding KOTCommand}"
                                 CommandParameter="2"
-                                BackgroundColor="Green"
                                 Text="Save KOT"/>
                             </Grid>                        
 
@@ -152,25 +151,26 @@
                             <Label Text="Order"
                                    HorizontalOptions="Center"
                                    Grid.Column="2"
-                                   FontAttributes="Bold"/>
-                            
+                                   FontAttributes="Bold"/>                            
                         </Grid>
 
                         <ListView ItemsSource="{Binding OrderItemsList}"   
                                   ItemSelected="MenuItemSelected"
-                                      SelectedItem="{Binding SelectedOrderItem}"
+                                  SelectedItem="{Binding SelectedOrderItem}"
                                   x:Name="OrderItemsLV"
                                   HasUnevenRows="True"                                                  
-                                  SeparatorVisibility="None" 
-                                    
+                                  SeparatorVisibility="None"                                     
                                   VerticalOptions="FillAndExpand">
+                            <!--<ListView.Behaviors>
+                                <local:ItemTappedToCommandBehavior Command="{Binding TappedCommand}" CommandParameter="{Binding .}"/>
+                            </ListView.Behaviors>-->
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <ViewCell>
-                                            <StackLayout Margin="5" >
-                                                <Frame BackgroundColor="{Binding SNO,Converter={StaticResource CCC}}"
+                                    <ViewCell >
+                                        <Frame BackgroundColor="{Binding SNO,Converter={StaticResource CCC}}"
                                                    Padding="5" >
-                                                    <Grid>
+                                                <StackLayout Margin="5" >
+                                                <Grid x:Name="ListGrid">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="5*"/>
                                                             <ColumnDefinition Width="2*"/>
@@ -183,23 +183,24 @@
                                                            TextColor="White"/>
                                                         <Label Text="{Binding Quantity}"
                                                            Grid.Column="1"
+                                                               HorizontalTextAlignment="End"
                                                            TextColor="White"/>
-                                                        <Button Text="-"
-                                                            TextColor="White"
-                                                            BackgroundColor="Green"
+                                                    <Button Text="-"
                                                             Command="{Binding Path=BindingContext.DecCommand, Source={x:Reference Name=OrderItemsLV}}"
                                                             CommandParameter="{Binding .}" Grid.Column="2"/>
                                                         <Label Text="{Binding OrderSNO}"
                                                                Grid.Column="3"
                                                                TextColor="White"/>
                                                         <Button Text="+"
-                                                            TextColor="White"
-                                                            BackgroundColor="Green"
                                                             Command="{Binding Path=BindingContext.IncCommand, Source={x:Reference Name=OrderItemsLV}}"
                                                             CommandParameter="{Binding .}" Grid.Column="4"/>
                                                     </Grid>
-                                                </Frame>
+                                                <StackLayout Orientation="Horizontal" IsVisible="{Binding IsVisible}">
+                                                    <Entry Text="{Binding Remarks}"/>
+                                                    <Button Text="OK"/>
+                                                </StackLayout>
                                             </StackLayout>
+                                        </Frame>
                                         </ViewCell>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -208,13 +209,19 @@
                     </Grid>
                 </StackLayout>
 
-                <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
-                              HorizontalOptions="Center"
-                              VerticalOptions="Center">
-                    <Frame OutlineColor="Black"
-                                    CornerRadius="10"
-                                    Padding="20"
-                                    BackgroundColor="White">
+            <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
+                       CornerRadius="10"
+                       Padding="20"
+                       BackgroundColor="White"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center">
                         <StackLayout Orientation="Vertical">
                             <ActivityIndicator IsRunning="{Binding IsLoading}" />
                             <Label Text="{Binding LoadingMessage}"
@@ -230,7 +237,11 @@
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand"
                   BackgroundColor="Transparent">
-                    <Frame OutlineColor="Black"
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand"
                        CornerRadius="10"

@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KOTApp.Views.TableTransfer.TransferSplitPage"
+             xmlns:con="clr-namespace:KOTApp.Converters">
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+            <con:ZeroConverter x:Key="ZC"/>
+            <con:ColorChangeConverter x:Key="CCC"/>
+            <Style TargetType="Button" >
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="24"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource greenColor}"/>
+            </Style>
+
+            <Style TargetType="Label" >
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="22"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Tablet="24"
+                                 Phone="18"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="SmallLabel">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="14"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+
+            <Style TargetType="Switch">
+                <Setter Property="Scale" >
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="0.5"
+                                 Tablet="0.9"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="Margin" >
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="0"
+                                 Tablet="2"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout BackgroundColor="Black">
+                <ListView ItemsSource="{Binding OrderItemsList}"   
+                          ItemSelected="MenuItemSelected"
+                          x:Name="OrderItemsLV"
+                          HasUnevenRows="True"                                                  
+                          SeparatorVisibility="None"   
+                          VerticalOptions="FillAndExpand">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Margin="5">
+                                    <Frame BackgroundColor="{Binding SNO,Converter={StaticResource CCC}}"
+                                                   Padding="5" >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="7*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Text="{Binding ItemDesc}"
+                                                           Grid.Column="0"
+                                                           TextColor="White"/>
+                                            <Label Text="{Binding Quantity}"
+                                                           Grid.Column="1"
+                                                           TextColor="White"/>
+                                            <Button Text="{Binding TABLENO}"
+                                                    Command="{Binding Path=BindingContext.TransferCommand, Source={x:Reference Name=OrderItemsLV}}"
+                                                    CommandParameter="{Binding .}"
+                                                    TextColor="White"
+                                                    Grid.Column="2"
+                                                    />
+                                        </Grid>
+                                    </Frame>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Text="Save" VerticalOptions="End" Command="{Binding SaveCommand}"/>
+                <Button Text="Cancel" VerticalOptions="End" Command="{Binding BackCommand}"/>
+            </StackLayout>
+
+            <Grid x:Name="SplitOverlay" 
+                  IsVisible="{Binding IsSplit}"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
+                       CornerRadius="10"
+                       Padding="10"
+                       Margin="10"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="Center"
+                       BackgroundColor="White">
+                    <StackLayout VerticalOptions="Center"
+                                 HorizontalOptions="FillAndExpand">
+                        <Label Text="Select Tables for items"
+                               TextColor="Black"
+                               HorizontalOptions="Start"/>
+                        <BoxView HeightRequest="2"
+                                 BackgroundColor="Red"                                 
+                                 Margin="1"/>
+                        <ListView ItemsSource="{Binding TransferItemsList}"   
+                                  ItemSelected="MenuItemSelected"
+                                  VerticalOptions="Center"
+                                  HasUnevenRows="True">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="7*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="2*"/>
+
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Text="{Binding ItemDesc}"
+                                                        Grid.Column="0"
+                                                   TextColor="Black"/>
+                                            <Label Text="{Binding Quantity}"
+                                                        Grid.Column="1"
+                                                   TextColor="Black"/>
+                                            <Picker ItemsSource="{Binding Path=BindingContext.TableStrList, Source={x:Reference Name=SplitOverlay}" 
+                                                        SelectedItem="{Binding TABLENO}"  
+                                                    TextColor="Black"
+                                                        Title="Select Table"
+                                                        Grid.Column="2"/>                                          
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Button Text="OK" Command="{Binding SplitOkCommand}"/>
+                        <Button Text="Cancel" Command="{Binding CancelCommand}"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+        </Grid>       
+    </ContentPage.Content>
+</ContentPage>

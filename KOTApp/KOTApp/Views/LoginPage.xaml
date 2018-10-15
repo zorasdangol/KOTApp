@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="KOTApp.Views.LoginPage"
+             x:Class="KOTApp.Views.LoginPage"             
+             xmlns:effects="clr-namespace:XamarinFormsEffects"
              BackgroundColor="Wheat">
     <ContentPage.Content >
         <ScrollView>
@@ -43,13 +44,16 @@
                                    FontSize="Small"
                                    HorizontalOptions="Start"/>
                             <Switch IsToggled="{Binding HidePassword}"
-                                    HorizontalOptions="Center"/>
+                                    HorizontalOptions="Center"                                    
+                                    effects:ChangeColorSwitchEffect.TrueColor="Lime" 
+                                    effects:ChangeColorSwitchEffect.FalseColor="Aqua"
+                                    effects:ChangeColorSwitchEffect.ThumbColor="Black"/>
                         </StackLayout>
 
                         <Button Text="Login"
                                 TextColor="White"
                                 Command="{Binding LoginCommand}"
-                                BackgroundColor="Green"/>
+                                BackgroundColor="{StaticResource greenColor}"/>
 
                         <BoxView HeightRequest="2"
                                  Margin="10"
@@ -112,17 +116,21 @@
                       HorizontalOptions="FillAndExpand"
                       VerticalOptions="FillAndExpand"
                      >
+                    <Frame BackgroundColor="LightBlue"
+                           Opacity="0.5"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="FillAndExpand"/>
                     <Frame OutlineColor="Black"
                            CornerRadius="10"
                            Padding="20"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
-                           BackgroundColor="White">
+                           BackgroundColor="Black">
                         <StackLayout Orientation="Vertical">
-                            <ActivityIndicator IsRunning="{Binding IsLoading}" />
+                            <ActivityIndicator IsRunning="{Binding IsLoading}" BackgroundColor="Black" Color="White" />
                             <Label Text="Loading! Please wait..."
-                               TextColor="Black"
-                               FontAttributes="Bold"/>
+                                   TextColor="White"
+                                   FontAttributes="Bold"/>
                         </StackLayout>
                     </Frame>
                 </Grid>

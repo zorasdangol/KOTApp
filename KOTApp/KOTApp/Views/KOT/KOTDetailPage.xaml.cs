@@ -22,6 +22,8 @@ namespace KOTApp.Views.KOT
 
         protected override void OnAppearing()
         {
+            var vm = BindingContext as KOTProdTabbedPageVM;
+            vm.RefreshOrderItemsList();
             //viewModel.RefreshOrderList();
         }
 

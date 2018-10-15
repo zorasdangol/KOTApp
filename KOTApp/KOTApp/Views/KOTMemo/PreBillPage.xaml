@@ -6,7 +6,7 @@
         <ResourceDictionary>
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"/>
-                <Setter Property="BackgroundColor" Value="Green"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource greenColor}"/>
             </Style>
             <Style TargetType="StackLayout">
                 <Setter Property="Margin" Value="5"/>

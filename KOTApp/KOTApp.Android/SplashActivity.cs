@@ -6,7 +6,7 @@ using Android.Support.V7.App;
 using Android.Util;
 using KOTApp.Droid;
 
-[Activity(Theme = "@style/MyTheme.Splash",Label = "KOT App", Icon = "@drawable/icon", MainLauncher = true, NoHistory = true)]
+[Activity(Theme = "@style/MyTheme.Splash",Label = "KOT App", Icon = "@drawable/rms", MainLauncher = true, NoHistory = true)]
 public class SplashActivity : AppCompatActivity
 {
     static readonly string TAG = "X:" + typeof(SplashActivity).Name;

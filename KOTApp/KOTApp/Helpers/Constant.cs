@@ -46,6 +46,12 @@ namespace KOTApp.Helpers
         //public static string GetTableDetailsURL = "GetTableDetails?TableNo={0}";
         public static string GetTableItemsDetailsURL = "GetTableItemsDetail?TableNo={0}";
 
+        public static string CheckAccessURL = "CheckAccess";
+
+        public static string TransferAllTableURL = "transferAllTable?tableNew={0}&tableOld={1}";
+        public static string MergeTableURL = "MergeTable";
+        public static string SplitTableURL = "SplitTable";
+
         //public static string SaveKOTProdListURL = "GetTableDetails?TableNo={0},transferData={1},TRNUSER={2},PAX={3}";
 
         public static string SaveKOTProdListURL = "GetTableDetails?";

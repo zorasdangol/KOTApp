@@ -14,11 +14,11 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Phone="14"
-                                 Tablet="24"/>
+                                 Tablet="28"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="TextColor" Value="White"/>
-                <Setter Property="BackgroundColor" Value="Green"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource greenColor}"/>
             </Style>
 
             <Style TargetType="Label" >
@@ -39,7 +39,7 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Tablet="24"
-                                 Phone="18"/>
+                                 Phone="14"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="HorizontalOptions" Value="Center"/>
@@ -107,8 +107,7 @@
                             <Button Grid.Column="0"
                                 Text="New KOT"
                                 Command="{Binding KOTCommand}"
-                                CommandParameter="1"
-                                BackgroundColor="Green"/>
+                                CommandParameter="1"/>
 
                             <Label Grid.Column="1"
                                VerticalOptions="Center"
@@ -124,7 +123,6 @@
                             <Button Grid.Column="3"
                                 Command="{Binding KOTCommand}"
                                 CommandParameter="2"
-                                BackgroundColor="Green"
                                 Text="Save KOT"/>
                         </Grid>
                         
@@ -139,10 +137,10 @@
                                   x:Name="OrderItemsLV"
                                   HasUnevenRows="True"                                                  
                                   SeparatorVisibility="None"                                  
-                                  VerticalOptions="FillAndExpand">
+                                  VerticalOptions="FillAndExpand">                  
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <ViewCell>
+                                    <ViewCell >
                                         <StackLayout Margin="5" >
                                             <Frame BackgroundColor="{Binding SNO,Converter={StaticResource CCC}}"
                                                    Padding="5" >
@@ -152,6 +150,7 @@
                                                         <ColumnDefinition Width="2*"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Label Text="{Binding ItemDesc}"
                                                            Grid.Column="0"
@@ -159,16 +158,17 @@
                                                     <Label Text="{Binding Quantity}"
                                                            Grid.Column="1"
                                                            TextColor="White"/>
-                                                    <Button Text="Decr. Order"
+                                                    <Label Text="{Binding DecQuantity}"
+                                                           Grid.Column="2"
+                                                           TextColor="Black"/>
+                                                    <Button Text="-"
                                                             TextColor="White"
-                                                            BackgroundColor="Green"
                                                             Command="{Binding Path=BindingContext.DecreaseOrderCommand, Source={x:Reference Name=OrderItemsLV}}"
-                                                            CommandParameter="{Binding .}" Grid.Column="2"/>
+                                                            CommandParameter="{Binding .}" Grid.Column="3"/>
                                                     <Button Text="Cancel"
                                                             TextColor="White"
-                                                            BackgroundColor="Green"
                                                             Command="{Binding Path=BindingContext.CancelCommand, Source={x:Reference Name=OrderItemsLV}}"
-                                                            CommandParameter="{Binding .}" Grid.Column="3"/>
+                                                            CommandParameter="{Binding .}" Grid.Column="4"/>
                                                 </Grid>
                                             </Frame>
                                         </StackLayout>
@@ -181,12 +181,19 @@
             </StackLayout>
             
             <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
-                              HorizontalOptions="Center"
-                              VerticalOptions="Center">
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
                 <Frame OutlineColor="Black"
-                                    CornerRadius="10"
-                                    Padding="20"
-                                    BackgroundColor="White">
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Margin="10"
+                       CornerRadius="10"
+                       Padding="20"
+                       BackgroundColor="White">
                     <StackLayout Orientation="Vertical">
                         <ActivityIndicator IsRunning="{Binding IsLoading}" />
                         <Label Text="{Binding LoadingMessage}"
@@ -202,22 +209,35 @@
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand"
                   BackgroundColor="Transparent">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
                 <Frame OutlineColor="Black"
-                       HorizontalOptions="CenterAndExpand"
+                       HorizontalOptions="FillAndExpand"
                        VerticalOptions="CenterAndExpand"
                        CornerRadius="10"
                        Padding="20"
                        BackgroundColor="LightCyan">
-                    <StackLayout Orientation="Vertical">
+                    <StackLayout Orientation="Vertical"
+                                 HorizontalOptions="FillAndExpand">
                         <Frame OutlineColor="Red"
-                               CornerRadius="10">
+                               CornerRadius="10"
+                               Padding="5">
                             <Label Text="RMS Login"
-                                   HorizontalOptions="Center"
-                                   TextColor="Red"/>
+                                   HorizontalOptions="CenterAndExpand"
+                                   TextColor="Red"
+                                   Margin="0"/>
                         </Frame>
-                        <Entry Text="" Placeholder="Enter UserName" />
-                        <Entry Text="" Placeholder="Enter Password"/>                        
-                        <Button Text="Login"/>
+                        <Entry Text="{Binding CancelingUser.UserName}" Placeholder="Enter UserName" HorizontalOptions="FillAndExpand" />
+                        <Entry Text="{Binding CancelingUser.Password}" Placeholder="Enter Password" HorizontalOptions="FillAndExpand"
+                               IsPassword="True"/>
+                        <Frame OutlineColor="Black"
+                               BackgroundColor="White"
+                               Margin="5">
+                            <Entry Text="{Binding CancelingUser.Remarks}" Placeholder="Enter Remarks" HorizontalOptions="FillAndExpand"/>
+                        </Frame>
+                        <Button Text="Login" Command="{Binding LoginCheckCommand}"/>
                         <Button Text="Cancel" Command="{Binding BackCommand}"/>
                     </StackLayout>
                 </Frame>

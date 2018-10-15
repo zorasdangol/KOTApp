@@ -5,6 +5,7 @@ using KOTAppClassLibrary.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
@@ -24,8 +25,8 @@ namespace KOTApp.ViewModels.KOT
             }
         }
 
-        private List<TableDetail> _TableListRight { get; set; }
-        public List<TableDetail> TableListRight
+        private ObservableCollection<TableDetail> _TableListRight { get; set; }
+        public ObservableCollection<TableDetail> TableListRight
         {
             get { return _TableListRight; }
             set
@@ -35,8 +36,8 @@ namespace KOTApp.ViewModels.KOT
             }
         }
 
-        private List<TableDetail> _TableListLeft { get; set; }
-        public List<TableDetail> TableListLeft
+        private ObservableCollection<TableDetail> _TableListLeft { get; set; }
+        public ObservableCollection<TableDetail> TableListLeft
         {
             get { return _TableListLeft; }
             set
@@ -66,8 +67,7 @@ namespace KOTApp.ViewModels.KOT
             {
                 if(value == null)                
                     return;
-                if(_SelectedLayout != value)
-                {
+                { 
                     _SelectedLayout = value;
                     ViewSelectedTable(value);
                 }               
@@ -129,12 +129,12 @@ namespace KOTApp.ViewModels.KOT
                 TableList = new List<TableDetail>();
                 if (value == "All")
                 {
-                    TableList = Helpers.Data.TableList;
+                    TableList = new List<TableDetail>(Helpers.Data.TableList);
                     DivideTableView(TableList);
                 }
                 else
                 {
-                    TableList = Helpers.Data.TableList.Where(x => x.LayoutName == value).ToList();
+                    TableList = new List<TableDetail>(Helpers.Data.TableList.Where(x => x.LayoutName == value).ToList());
                     DivideTableView(TableList);
                 }
             }
@@ -147,20 +147,13 @@ namespace KOTApp.ViewModels.KOT
         public void DivideTableView(List<TableDetail> TableList)
         {
             try
-            {              
-                //if (Helpers.Data.PackedTableList.Count > 0)
-                //{
-                //    foreach (var table in Helpers.Data.PackedTableList)
-                //    {
-                //        TableList.Find(x => x.TableNo == table.TableNo).IsPacked = true;
-                //    }
-                //}
-
-                TableListLeft = new List<TableDetail>();
-                TableListRight = new List<TableDetail>();
+            {       
+                TableListLeft = new ObservableCollection<TableDetail>();
+                TableListRight = new ObservableCollection<TableDetail>();
                 var flag = 0;
                 foreach (var table in TableList)
                 {
+                    table.TableColor = table.IsPacked ? "Red" : "Green";
                     if (flag == 0)
                     {
                         TableListLeft.Add(table);
@@ -172,9 +165,12 @@ namespace KOTApp.ViewModels.KOT
                         flag = 0;
                     }
                 }
-            }catch(Exception e)
+                TableListLeft = new ObservableCollection<TableDetail>(TableListLeft);
+                TableListRight = new ObservableCollection<TableDetail>(TableListRight);
+            }
+            catch(Exception e)
             {
-
+                DependencyService.Get<IMessage>().ShortAlert(e.Message);
             }
         }
 
@@ -194,43 +190,50 @@ namespace KOTApp.ViewModels.KOT
                 IsLoading = false;
                 await App.Current.MainPage.Navigation.PushAsync(new KOTProdTabbedPage());
             }
-            catch
+            catch(Exception ex)
             {
-                await App.Current.MainPage.Navigation.PushAsync(new KOTProdTabbedPage());
+                DependencyService.Get<IMessage>().ShortAlert(ex.Message);
+                //await App.Current.MainPage.Navigation.PushAsync(new KOTProdTabbedPage());
             }
         }
 
         public async void ExecuteRefreshCommand()
         {
-            LoadingMessage = "Please Wait, Checking pending KOT";
-            IsLoading = true;
-            // var res = await TableDataAccess.CheckPendingKOTAsync();
-
-            //if (res == "0")
+            try
             {
-                var functionResponse = await TableDataAccess.GetTableAsync();
-                if (functionResponse.status == "ok")
+                LoadingMessage = "Please Wait, Checking pending KOT";
+                IsLoading = true;
+                // var res = await TableDataAccess.CheckPendingKOTAsync();
+
+                //if (res == "0")
                 {
-                    var list = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
-                    Helpers.Data.TableList = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
-                    TableList = Helpers.Data.TableList;
+                    var functionResponse = await TableDataAccess.GetTableAsync();
+                    if (functionResponse.status == "ok")
+                    {
+                        var list = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
+                        Helpers.Data.TableList = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
+                        TableList = Helpers.Data.TableList;
+                    }
+                    else
+                    {
+                        Helpers.Data.TableList = new List<TableDetail>();
+                        TableList = Helpers.Data.TableList;
+                    }
+                    IsLoading = false;
+                    if (Helpers.Data.TableList.Count > 0)
+                    {
+                        SetLayout();
+                        ViewSelectedTable("All");
+                        SelectedLayout = "All";
+                    }
+                    else
+                    {
+                        DependencyService.Get<IMessage>().ShortAlert("No Tables available.");
+                    }
                 }
-                else
-                {
-                    Helpers.Data.TableList = new List<TableDetail>();
-                    TableList = Helpers.Data.TableList;
-                }
-                IsLoading = false;
-                if (Helpers.Data.TableList.Count > 0)
-                {
-                    SetLayout();
-                    ViewSelectedTable("All");
-                    SelectedLayout = "All";
-                }
-                else
-                {
-                    DependencyService.Get<IMessage>().ShortAlert("No Tables available.");
-                }
+            }catch(Exception ex)
+            {
+                DependencyService.Get<IMessage>().ShortAlert(ex.Message);
             }
         }
     }

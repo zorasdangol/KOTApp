@@ -4,6 +4,7 @@
              x:Class="KOTApp.Views.TableTransfer.TransferTablePage"
              xmlns:con="clr-namespace:KOTApp.Converters"  
              xmlns:local="clr-namespace:KOTApp.Controls"
+             BackgroundColor="DarkSlateGray"
              >
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -16,7 +17,7 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Tablet="30"                                
-                                 Phone="18"/>
+                                 Phone="14"/>
 
                     </Setter.Value>
                 </Setter>              
@@ -24,7 +25,7 @@
 
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="0"/>
-                <Setter Property="BackgroundColor" Value="Green"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource greenColor}"/>
                 <Setter Property="TextColor" Value="White"/>
             </Style>
 
@@ -46,24 +47,46 @@
 
     <ContentPage.Content>
         <Grid>
+
             <StackLayout Margin="5">
-                <ScrollView>
+
+                <Frame OutlineColor="AliceBlue"
+                            Margin="5,5,5,0"
+                            Padding="10">
+                    <StackLayout>
+                        <Label Text="Select Table"
+                               TextColor="Black"
+                               HorizontalOptions="CenterAndExpand"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                </Frame>
+
+                <BoxView BackgroundColor="Red"
+                     HeightRequest="2"
+                     Margin="1"/>
+                
+                <Frame OutlineColor="Black"
+                            Margin="5,0"
+                            Padding="5"
+                            VerticalOptions="FillAndExpand"
+                            CornerRadius="10">
+
                     <StackLayout Orientation="Horizontal">
                         <ListView x:Name="listView1" 
-                              ItemsSource="{Binding TableListLeft}"
-                              ItemSelected="MenuItemSelected"
-                              Style="{StaticResource listView}">
+                            ItemsSource="{Binding TableListLeft}"
+                            ItemSelected="MenuItemSelected"
+                            Style="{StaticResource listView}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
                                         <StackLayout Margin="5"
-                                                     Padding="0">
+                                                    Padding="0">
 
                                             <Button Text="{Binding TableNo}"  
-                                                        Style="{StaticResource ButtonLV}"
-                                                        BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
-                                                        Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView1}}"
-                                                        CommandParameter="{Binding TableNo}"/>
+                                                    Style="{StaticResource ButtonLV}"
+                                                    BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
+                                                    Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView1}}"
+                                                    CommandParameter="{Binding TableNo}"/>
 
                                         </StackLayout>
                                     </ViewCell>
@@ -73,19 +96,19 @@
 
 
                         <ListView x:Name="listView2" 
-                              ItemsSource="{Binding TableListRight}"                              
-                              ItemSelected="MenuItemSelected"
-                              Style="{StaticResource listView}">
+                            ItemsSource="{Binding TableListRight}"                              
+                            ItemSelected="MenuItemSelected"
+                            Style="{StaticResource listView}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
                                         <StackLayout Margin="5"
-                                                     Padding="0">
+                                                    Padding="0">
                                             <Button Text="{Binding TableNo}"                                                     
-                                                        Style="{StaticResource ButtonLV}"
-                                                        BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
-                                                        Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView2}}"
-                                                        CommandParameter="{Binding TableNo}"/>
+                                                    Style="{StaticResource ButtonLV}"
+                                                    BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
+                                                    Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView2}}"
+                                                    CommandParameter="{Binding TableNo}"/>
 
                                         </StackLayout>
                                     </ViewCell>
@@ -93,12 +116,82 @@
                             </ListView.ItemTemplate>
                         </ListView>
                     </StackLayout>
-                </ScrollView>
+                </Frame>
             </StackLayout>
+
+            <Grid x:Name="TransferOverLay" IsVisible="{Binding IsTransfer}"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
+                       CornerRadius="10"
+                       Padding="20"
+                       Margin="10"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       BackgroundColor="White">
+                    <StackLayout Orientation="Vertical" 
+                                 HorizontalOptions="FillAndExpand">
+                        <Label Text="Choose Table to Transfer"
+                               TextColor="Black"/>
+                        <BoxView HeightRequest="2"
+                                 BackgroundColor="Red"
+                                 Margin="1"/>
+                        <Picker Title="Select Table No"                               
+                                ItemsSource="{Binding EmptyTableList}"
+                                HorizontalOptions="FillAndExpand"
+                                ItemDisplayBinding="{Binding TableNo}"
+                                SelectedItem="{Binding SelectedTransferTo}"/>
+
+                        <Button Text="Ok" Command="{Binding OkCommand}" CommandParameter="Transfer"/>
+                        <Button Text="Cancel" Command="{Binding CancelCommand}"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+
+            <Grid x:Name="MergeOverLay" IsVisible="{Binding IsMerge}"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
+                       CornerRadius="10"
+                       Padding="20"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       BackgroundColor="White">
+                    <StackLayout Orientation="Vertical" 
+                                 HorizontalOptions="FillAndExpand">
+                        <Label Text="Choose Table to Merge to"
+                               TextColor="BlueViolet"/>
+                        <BoxView HeightRequest="2"
+                                 BackgroundColor="Red"
+                                 Margin="5"/>
+                        <Picker Title="Select Table No"                               
+                                ItemsSource="{Binding AllTableList}"
+                                HorizontalOptions="CenterAndExpand"
+                                ItemDisplayBinding="{Binding TableNo}"
+                                SelectedItem="{Binding SelectedTransferTo}"/>
+
+                        <Button Text="Ok" Command="{Binding OkCommand}" CommandParameter="Merge"/>
+                        <Button Text="Cancel" Command="{Binding CancelCommand}"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+
 
             <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
                   HorizontalOptions="FillAndExpand"
-                  VerticalOptions="FillAndExpand">
+                  VerticalOptions="FillAndExpand">                
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
                 <Frame OutlineColor="Black"
                        CornerRadius="10"
                        Padding="20"
@@ -111,32 +204,6 @@
                                TextColor="Black"
                                FontAttributes="Bold"
                                FontSize="Medium"/>
-                    </StackLayout>
-                </Frame>
-            </Grid>
-
-
-            <Grid x:Name="TransferOverLay" IsVisible="{Binding IsTransfer}"
-                  HorizontalOptions="FillAndExpand"
-                  VerticalOptions="FillAndExpand">
-                <Frame OutlineColor="Black"
-                       CornerRadius="10"
-                       Padding="20"
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="CenterAndExpand"
-                       BackgroundColor="White">
-                    <StackLayout Orientation="Vertical">
-                        <Label Text="Choose Table to Transfer"
-                               TextColor="BlueViolet"/>
-                        <BoxView HeightRequest="2"
-                                 Margin="5"/>
-                        <Picker Title="Select Table No"
-                                ItemsSource="{Binding EmptyTableList}"
-                                ItemDisplayBinding="{Binding TableNo}"
-                                SelectedItem="{Binding}"/>
-
-                        <Button Text="Ok"/>
-                        <Button Text="Cancel"/>
                     </StackLayout>
                 </Frame>
             </Grid>
