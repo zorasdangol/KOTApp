@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KOTApp.Views.KitchenDispatch.KitchenDispatchPage"
+             xmlns:con="clr-namespace:KOTApp.Converters">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <con:BooleanConverter x:Key="bc"/>
+            <con:ColorChangeConverter x:Key="ccc"/>
+            <con:DispatchColorConverter x:Key="dcc"/>
+            <con:DispatchToBooleanConverter x:Key="dbc"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="refresh.png" Command="{Binding RefreshCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout BackgroundColor="LightBlue"
+                         VerticalOptions="FillAndExpand"
+                         Padding="10">
+                <Frame CornerRadius="5" >
+                    <StackLayout>
+                        <Label Text="Search By: "/>
+                        <StackLayout Orientation="Horizontal">
+                            <Switch IsToggled="{Binding IsTable}"/>
+                            <Label Text="Table"/>
+                            <Switch IsToggled="{Binding IsItem}"/>
+                            <Label Text="Item"/>
+                        </StackLayout>
+                        <Picker ItemsSource="{Binding PackedTableList}"
+                                IsVisible="{Binding IsTable}"
+                                Title="Select Table"
+                                ItemDisplayBinding="{Binding TableNo}"
+                                HorizontalOptions="FillAndExpand"
+                                SelectedItem="{Binding SelectedTable}"
+                                Margin="5"/>
+                        <Picker ItemsSource="{Binding ItemsList}"
+                                IsVisible="{Binding IsItem}"
+                                Title="Select Item"
+                                HorizontalOptions="FillAndExpand"
+                                SelectedItem="{Binding SelectedItem}"
+                                Margin="5"/>
+                    </StackLayout>
+               
+                </Frame>
+                <Frame VerticalOptions="FillAndExpand"
+                       CornerRadius="5">
+                    <ListView x:Name="OrderItemsLV"
+                              ItemsSource="{Binding OrderItemsList}"
+                              HasUnevenRows="True"    
+                              ItemSelected="MenuItemSelected"
+                              SeparatorVisibility="None"
+                              VerticalOptions="FillAndExpand"
+                              HorizontalOptions="FillAndExpand"
+                              ItemTapped="ListView_OnItemTapped">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame OutlineColor="Black"
+                                           BackgroundColor="{Binding KitchenDispatch, Converter={StaticResource Key=dcc}}"
+                                           CornerRadius="5"  
+                                           Margin="0,3">
+                                        <StackLayout>
+                                            <Label Text="{Binding TABLENO}"
+                                                   TextColor="Blue"/>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="Remarks:"
+                                                       TextColor="Black"/>
+                                                <Label Text="{Binding Remarks}"
+                                                       TextColor="MediumVioletRed"/>
+                                            </StackLayout>
+                                           
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="4*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Text="{Binding ItemDesc}" Grid.Column="0"
+                                                       TextColor="Black"/>
+                                                <Label Text="{Binding Quantity}" Grid.Column="1"/>
+                                                <Label Text="{Binding KOTTIME}" Grid.Column="2"/>
+                                            </Grid>
+                                            <StackLayout IsVisible="{Binding KitchenDispatch, Converter={StaticResource Key=dbc}}">
+                                                <StackLayout IsVisible="{Binding IsVisible}">
+                                                    <Entry x:Name="RemarksEntry" Focused="RE_Focused_Handler" 
+                                                           Unfocused="RE_Unfocused_Handler"
+                                                           Text="{Binding Path=BindingContext.Remarks, Source={x:Reference Name=OrderItemsLV}}" Placeholder="Enter Remarks"/>
+                                                    <Grid >
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Button Text="Call" Grid.Column="0" BackgroundColor="DarkOliveGreen"     
+                                                            Command="{Binding Path=BindingContext.CallCommand, Source={x:Reference Name=OrderItemsLV}}" />
+                                                        <Button Text="Dispatch" Grid.Column="1" BackgroundColor="OrangeRed"                                                            
+                                                            Command="{Binding Path=BindingContext.DispatchCommand, Source={x:Reference Name=OrderItemsLV}}"/>
+                                                        <Button Text="Split" Grid.Column="2" BackgroundColor="DarkBlue"  
+                                                            Command="{Binding Path=BindingContext.SplitCommand, Source={x:Reference Name=OrderItemsLV}}"/>
+                                                    </Grid>
+                                                </StackLayout>
+                                            </StackLayout>
+                                           
+                                           
+                                        </StackLayout>
+
+                                    </Frame>
+                                   
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
+
+                </Frame>
+            </StackLayout>
+       
+
+            <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Margin="10"
+                       CornerRadius="10"
+                       Padding="20"
+                       BackgroundColor="White">
+                    <StackLayout Orientation="Vertical">
+                        <ActivityIndicator IsRunning="{Binding IsLoading}" />
+                        <Label Text="{Binding LoadingMessage}"
+                                           TextColor="Black"
+                                           FontAttributes="Bold"
+                                           FontSize="Medium"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+
+        </Grid>
+
+      
+
+    </ContentPage.Content>
+</ContentPage>

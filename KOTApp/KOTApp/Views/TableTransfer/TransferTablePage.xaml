@@ -141,7 +141,7 @@
                                  BackgroundColor="Red"
                                  Margin="1"/>
                         <Picker Title="Select Table No"                               
-                                ItemsSource="{Binding EmptyTableList}"
+                                ItemsSource="{Binding AllTableList}"
                                 HorizontalOptions="FillAndExpand"
                                 ItemDisplayBinding="{Binding TableNo}"
                                 SelectedItem="{Binding SelectedTransferTo}"/>

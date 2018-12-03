@@ -79,11 +79,27 @@ namespace KOTApp.ViewModels.TableTransfer
             }
         }
 
+        private bool _IsLoading;
+        public bool IsLoading
+        {
+            get { return _IsLoading; }
+            set { _IsLoading = value; OnPropertyChanged("IsLoading"); }
+        }
+
+        private string _LoadingMessage;
+        public string LoadingMessage
+        {
+            get { return _LoadingMessage; }
+            set { _LoadingMessage = value; OnPropertyChanged("LoadingMessage"); }
+        }
+
         public Command SaveCommand { get; set; }
         public Command BackCommand { get; set; }
         
         public MergeTablePageVM()
         {
+            IsLoading = false;
+
             BackCommand = new Command(ExecuteBackCommand);
             SaveCommand = new Command(ExecuteSaveCommand);
             
@@ -125,6 +141,8 @@ namespace KOTApp.ViewModels.TableTransfer
         {
             try
             {
+                LoadingMessage = "Loading Please Wait!!!";
+                IsLoading = true;
                 var res = await App.Current.MainPage.DisplayAlert("Confirm", "Are you sure to Merge tables?", "Yes", "No");
                 if (res)
                 {
@@ -155,11 +173,14 @@ namespace KOTApp.ViewModels.TableTransfer
                     {
                         DependencyService.Get<IMessage>().ShortAlert(result);
                     }
-
                 }
+                IsLoading = false;
             }
             catch (Exception ex)
-            { }
+            {
+                IsLoading = false;
+                DependencyService.Get<IMessage>().ShortAlert(ex.Message);
+            }
 
         }
         public async void ExecuteBackCommand()

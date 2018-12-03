@@ -30,6 +30,19 @@ namespace KOTApp.Views.KOT
         protected override bool OnBackButtonPressed()
         {
             return true;
-        }       
+        }
+
+        public void Focused_Handler(object sender, Xamarin.Forms.FocusEventArgs e)
+        {
+            PaxEntry.Text = "";
+        }
+
+
+        public void Tapped_Handler(object sender, Xamarin.Forms.TappedEventArgs e)
+        {
+            SearchEntry.Unfocus();
+        }
+
+
     }
 }

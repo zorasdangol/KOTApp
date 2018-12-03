@@ -98,7 +98,7 @@
                                         <ViewCell>
                                             <StackLayout Margin="5"
                                                      Padding="0">
-                                                <Button Text="{Binding TableNo}"                                                     
+                                                <Button Text="{Binding TableNo}"                                                        
                                                         Style="{StaticResource ButtonLV}"
                                                         BackgroundColor="{Binding IsPacked,Converter={StaticResource TCC}}"
                                                         Command="{Binding Path=BindingContext.TableBTCommand, Source={x:Reference Name=listView2}}"
@@ -113,6 +113,37 @@
                     </ScrollView>
                 </Frame>
             </StackLayout>
+
+            <Grid IsVisible="{Binding IsRemarks}"
+                  Margin="0"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand"
+                  BackgroundColor="Transparent">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       CornerRadius="10"
+                       Margin="10"
+                       Padding="10">
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="Cancel KOT"
+                               HorizontalOptions="Center"
+                               TextColor="Black"/>
+                        <BoxView HeightRequest="2"
+                                 BackgroundColor="Red"/>
+                        <Entry Placeholder="Enter Remarks" 
+                               HorizontalTextAlignment="Center"
+                                   Text="{Binding Remarks}"
+                                   HorizontalOptions="FillAndExpand"/>
+                        <Button Text="Ok" Command="{Binding RemarksOkCommand}" BackgroundColor="ForestGreen"/>
+                        <Button Text="Cancel" Command="{Binding BackCommand}" BackgroundColor="ForestGreen"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
 
             <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
                   HorizontalOptions="FillAndExpand"

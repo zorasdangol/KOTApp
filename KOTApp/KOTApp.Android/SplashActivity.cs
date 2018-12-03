@@ -1,20 +1,26 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Util;
+using Android.Widget;
 using KOTApp.Droid;
+//using Plugin.FirebasePushNotification;
 
 [Activity(Theme = "@style/MyTheme.Splash",Label = "KOT App", Icon = "@drawable/rms", MainLauncher = true, NoHistory = true)]
 public class SplashActivity : AppCompatActivity
 {
+   
     static readonly string TAG = "X:" + typeof(SplashActivity).Name;
 
     public override void OnCreate(Bundle savedInstanceState, PersistableBundle persistentState)
     {
         base.OnCreate(savedInstanceState, persistentState);
         Log.Debug(TAG, "SplashActivity.OnCreate");
+              
+        //FirebasePushNotificationManager.ProcessIntent(this.Intent);
     }
 
     // Launches the startup task
@@ -34,5 +40,11 @@ public class SplashActivity : AppCompatActivity
         StartActivity(new Intent(Application.Context, typeof (MainActivity)));
     }
 
-	public override void OnBackPressed() { }
+    //protected override void OnNewIntent(Intent intent)
+    //{
+    //    base.OnNewIntent(intent);
+    //    FirebasePushNotificationManager.ProcessIntent(intent);
+    //}
+
+    public override void OnBackPressed() { }
 }

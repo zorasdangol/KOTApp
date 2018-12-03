@@ -11,7 +11,7 @@
             <Color x:Key="orangeColor">#ffb700</Color>
             <Color x:Key="greenColor">#044c1e</Color>
             <Color x:Key="lightGreenColor">#90ee90</Color>
-            <Color x:Key="redColor">#7c0000</Color>
+            <Color x:Key="redColor">#ff0202</Color>
 
             <Style TargetType="Button">
                 <Setter Property="FontSize">                    
@@ -31,7 +31,7 @@
                     <Setter.Value>
                         <OnIdiom x:TypeArguments="x:Double"
                                  Tablet="24"
-                                 Phone="14"/>
+                                 Phone="11"/>
                     </Setter.Value>
                 </Setter>
             </Style>

@@ -25,5 +25,19 @@ namespace KOTApp.Views.KOTMemo
             var listview = sender as ListView;
             listview.SelectedItem = null;
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            if(viewModel.IsLoading || viewModel.IsRemarks)
+            {
+                viewModel.IsLoading = false;
+                viewModel.IsRemarks = false;                     
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -38,6 +38,20 @@ namespace KOTApp.ViewModels.TableTransfer
             }
         }
 
+        private bool _IsLoading;
+        public bool IsLoading
+        {
+            get { return _IsLoading; }
+            set { _IsLoading = value; OnPropertyChanged("IsLoading"); }
+        }
+
+        private string _LoadingMessage;
+        public string LoadingMessage
+        {
+            get { return _LoadingMessage; }
+            set { _LoadingMessage = value; OnPropertyChanged("LoadingMessage"); }
+        }
+
         private List<TableDetail> _TableList;
         public List<TableDetail> TableList
         {
@@ -98,6 +112,8 @@ namespace KOTApp.ViewModels.TableTransfer
         {
             try
             {
+                IsLoading = false;
+
                 IsSplit = false;
                 TransferType = "";
                 TransferItemsList = new ObservableCollection<KOTProd>();
@@ -218,32 +234,54 @@ namespace KOTApp.ViewModels.TableTransfer
 
         public async void ExecuteSaveCommand()
         {
-            if(Helpers.Data.SelectedTable == null)
+            try
             {
-                DependencyService.Get<IMessage>().ShortAlert("Data mismatch Error.");
-                return;
+                var result = await App.Current.MainPage.DisplayAlert("Confirm", "Are you sure to save Split?", "Yes", "No");
+                if (result)
+                {
+                    LoadingMessage = "Loading Please Wait!!!";
+                    IsLoading = true;
+                    if (Helpers.Data.SelectedTable == null)
+                    {
+                        DependencyService.Get<IMessage>().ShortAlert("Data mismatch Error.");
+                        IsLoading = false;
+                        return;
+                    }
+
+                    var list = new List<KOTProd>(OrderItemsList);
+                    var recList = new List<KOTProd>(Helpers.Data.OrderItemsList);
+                    SplitTransfer SplitTransfer = new SplitTransfer();
+
+                    SplitTransfer = new SplitTransfer()
+                    {
+                        TableNo = Helpers.Data.SelectedTable.TableNo,
+                        transferData = OrderItemsList.ToList(),
+                        TRNUSER = Helpers.Constants.User.UserName
+                    };
+
+
+
+                    SplitTransfer.transferData.ForEach(x => x.DispatchTime = null);
+                    SplitTransfer.transferData.ForEach(x => x.TRNDATE = null);
+
+                    var res = await TableTransferAccess.GetSplitTableAsync(SplitTransfer);
+                    if (res.ToLower() == "success")
+                    {
+                        DependencyService.Get<IMessage>().ShortAlert("Split Successful");
+                        await App.Current.MainPage.Navigation.PopModalAsync();
+                    }
+                    else
+                    {
+                        DependencyService.Get<IMessage>().ShortAlert(res);
+                    }
+                    IsLoading = false;
+                }
             }
-
-            // var transferData = JsonConvert.SerializeObject(OrderItemsList.ToList()).ToString();
-            SplitTransfer SplitTransfer = new SplitTransfer()
+            catch (Exception e)
             {
-                TableNo = Helpers.Data.SelectedTable.TableNo,
-                transferData = OrderItemsList.ToList(),
-                TRNUSER = Helpers.Constants.User.UserName
-            };
+                IsLoading = false;
+                DependencyService.Get<IMessage>().ShortAlert(e.Message);
 
-            SplitTransfer.transferData.ForEach(x => x.DispatchTime = null);
-            SplitTransfer.transferData.ForEach(x => x.TRNDATE = null);
-
-            var res = await TableTransferAccess.GetSplitTableAsync(SplitTransfer);
-            if(res.ToLower() == "success")
-            {
-                DependencyService.Get<IMessage>().ShortAlert("Split Successful");
-                await App.Current.MainPage.Navigation.PopModalAsync();
-            }
-            else
-            {
-                DependencyService.Get<IMessage>().ShortAlert(res);
             }
         }
 

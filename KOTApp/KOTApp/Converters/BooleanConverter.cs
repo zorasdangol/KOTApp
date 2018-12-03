@@ -6,27 +6,20 @@ using Xamarin.Forms;
 
 namespace KOTApp.Converters
 {
-    public class TableColorConverter:IValueConverter
+    public class BooleanConverter : IValueConverter
     {
-        static TableColorConverter Instance = new TableColorConverter();
+        static BooleanConverter Instance = new BooleanConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            try
+            if (value == null)
+                return false;
+            if( (bool)value== true)
             {
-
-                if (value == null) return false;
-                if ((bool)value)
-                {
-                    return "#ff0202";
-                }
-                else
-                {
-                    return "#044c1e";
-                }
+                return false;
             }
-            catch 
+            else
             {
-                return Color.Green;
+                return true;
             }
         }
 

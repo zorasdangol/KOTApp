@@ -11,26 +11,29 @@
     <MasterDetailPage.Master>
         <ContentPage Title="&lt; Menu" 
                      x:Name="MasterPage"
-                     BackgroundColor="#7f848c">
+                     BackgroundColor="White">
             <ContentPage.Resources>
                 <ResourceDictionary>
                     <con:ImageConverter x:Key="IC"/>
                 </ResourceDictionary>
             </ContentPage.Resources>
             <StackLayout>
-                <Label Text="Select Menu Items"
+                <StackLayout BackgroundColor="#Ef9a9a">
+                    <Label Text="Select Menu Items"
                         FontAttributes="Bold"
                         FontSize="Large"
                         Margin="5,10"
                         HorizontalOptions="CenterAndExpand"
-                        TextColor="White"/>
-                <BoxView Margin="0,5"
+                        TextColor="Black"/>
+                </StackLayout>
+               
+                <!--<BoxView Margin="0,5"
                             HeightRequest="2"
-                            BackgroundColor="White"/>
+                            BackgroundColor="White"/>-->
                 <ListView ItemsSource="{Binding MasterMenuList}"
                             SelectedItem="{Binding SelectedMasterMenu}"
                             ItemSelected="Handle_ItemSelected"
-                            SeparatorColor="WhiteSmoke"
+                            SeparatorColor="Black"
                             HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -43,13 +46,13 @@
                                     <Label Text="{Binding DESCA}"
                                             FontSize="Large"
                                             Margin="10,5"
-                                            TextColor="White"  
+                                            TextColor="Black"  
                                             VerticalOptions="Center"
                                             HorizontalOptions="Start"/>
 
                                     <Label Text="{Binding ItemCount}"
                                             FontSize="Small"
-                                            TextColor="WhiteSmoke"
+                                            TextColor="Black"
                                             VerticalOptions="Center"
                                             HorizontalOptions="End"/>
                                 </StackLayout>
@@ -65,7 +68,7 @@
     <MasterDetailPage.Detail>
         <NavigationPage>
             <x:Arguments>
-                <TabbedPage Padding="5">
+                <TabbedPage>
                      <local:KOTMainMenuPage BindingContext="{Binding Path=BindingContext, Source={x:Reference Name=MasterPage}}" />
                      <local:KOTDetailPage  BindingContext="{Binding Path=BindingContext, Source={x:Reference Name=MasterPage}}" />
                     <local:ListOrderPage BindingContext="{Binding Path=BindingContext, Source={x:Reference Name=MasterPage}}"/>

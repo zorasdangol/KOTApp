@@ -5,6 +5,7 @@ using KOTApp.SQLiteAccess;
 using KOTApp.Views;
 using KOTAppClassLibrary.DataValidationLayer;
 using KOTAppClassLibrary.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,42 +38,53 @@ namespace KOTApp
 
         private async void CheckLoggedInAsync()
         {
-            var res = LoginUser.LoadUserAndIP(App.DatabaseLocation);
-            if (res)
+            try
             {
-                var User = Helpers.Constants.User;
-                var functionResponse = UserValidator.CheckUser(User);
-                if (functionResponse.status == "error")
+                var res = LoginUser.LoadUserAndIP(App.DatabaseLocation);
+                if (res)
                 {
-                    DependencyService.Get<IMessage>().ShortAlert(functionResponse.Message);
-                }
-                else
-                {
-                    //functionResponse = await LoginConnection.CheckAccessAsync(User);
-                    //if (functionResponse.status == "ok")
+                    var User = Helpers.Constants.User;
+                    var functionResponse = UserValidator.CheckUser(User);
+
+                    //if (functionResponse.status == "error")
                     //{
-                    //    Helpers.Data.MenuItemsList = MenuItemsAccess.LoadList(App.DatabaseLocation);
-                    //    MainPage = new NavigationPage(new HomePage());
+                    //    DependencyService.Get<IMessage>().ShortAlert(functionResponse.Message);
                     //}
                     //else
                     //{
-                    //    DependencyService.Get<IMessage>().ShortAlert(functionResponse.Message);
-                    //    MainPage = new LoginPage();
-                    //}
+                    //    var response = await LoginConnection.CheckAccessAsync(User);
+                    //    if (response.ToLower() == "success")
+                    //    {
+                    //        Helpers.Data.MenuItemsList = MenuItemsAccess.LoadList(App.DatabaseLocation);
+                    //        MainPage = new NavigationPage(new HomePage());
+                    //    }
+                    //    else
+                    //    {
+                    //        DependencyService.Get<IMessage>().ShortAlert(functionResponse.Message);
+                    //        MainPage = new LoginPage();
+                    //    }
 
                     MainPage = new LoginPage();
 
-                }                
+                    //}                
+                }
+                else
+                    MainPage = new LoginPage();
             }
-            else
+            catch (Exception ex)
+            {
+                DependencyService.Get<IMessage>().ShortAlert(ex.Message);
                 MainPage = new LoginPage();
+            }
 
         }
 
         protected override void OnStart ()
 		{
-			// Handle when your app starts
-		}
+            // Handle when your app starts
+            //AppCenter.Start("6c8a11e0-b024-4752-a470-334a4a3ef7be", typeof(Push));        
+
+        }
 
 		protected override void OnSleep ()
 		{

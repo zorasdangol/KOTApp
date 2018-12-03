@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KOTApp.Views.KOT.KOTMainMenuPage"
              xmlns:con="clr-namespace:KOTApp.Converters"
-             Padding="5"
              Title="KOT Main">
     <ContentPage.Resources>
         
@@ -121,11 +120,10 @@
                                Text="{Binding SelectedTable.TableNo}"
                                TextColor="Red"/>
 
-                        <!--<Button Grid.Column="3"
+                        <Button Grid.Column="3"
                                 Command="{Binding KOTCommand}"
                                 CommandParameter="2"
-                                BackgroundColor="Green"
-                                Text="Save KOT"/>-->
+                                Text="Save KOT"/>
                     </Grid>
 
                     <Grid Grid.Row="1" Margin="5">
@@ -149,6 +147,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Entry Grid.Column="0"
+                                       x:Name="SearchEntry"
                                        Text="{Binding SearchWord}"     
                                        Style="{StaticResource SmallLabel}"
                                        HorizontalOptions="FillAndExpand"
@@ -192,14 +191,34 @@
                         Command="{Binding SpecialItemCommand}"
                         HorizontalOptions="Fill"/>
 
-                    <ListView x:Name="SubMenuLV1"
+
+                        <Frame BackgroundColor="White"
+                                               Padding="5" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                <!--<ColumnDefinition Width="Auto"/>-->
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="Items" FontSize="Small"/>
+                                <Label Grid.Column="1" Text="Tot." FontSize="Small"/>
+                                <Label Grid.Column="2" Text="Rec." FontSize="Small"/>
+
+                            </Grid>
+                        </Frame>
+
+                        <ListView x:Name="SubMenuLV1"                              
                               ItemsSource="{Binding SelectedItemsList}"                                                  
                               ItemSelected="MenuItemSelected"
                               HasUnevenRows="True"                                                  
                               SeparatorVisibility="None">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <ViewCell>
+                                <ViewCell Tapped="Tapped_Handler">
                                     <StackLayout Margin="5" >
                                         <Frame BackgroundColor="LightSalmon"
                                                Padding="5" >
@@ -209,24 +228,30 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
-                                                    <!--<ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>-->
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <!--<ColumnDefinition Width="Auto"/>-->
                                                 </Grid.ColumnDefinitions>
                                                 <Label Text="{Binding DESCA}"
                                                        Grid.Column="0"/>
                                                 <Label Text="{Binding QUANTITY}"
                                                        Grid.Column="1"
-                                                       TextColor="Red"
+                                                       HorizontalTextAlignment="Start"
+                                                       TextColor="Black"
                                                        />
 
                                                 <Label Text="{Binding SetQuantity}"
                                                        Grid.Column="2"
                                                        TextColor="White"/>
 
+                                                <Button Text="-"                                                                        
+                                                        Command="{Binding Path=BindingContext.DecreaseMenuItemCommand, Source={x:Reference Name=SubMenuLV1}}"
+                                                        CommandParameter="{Binding .}"
+                                                        Grid.Column="3"/>
+
                                                 <Button Text="+"                                                                        
                                                         Command="{Binding Path=BindingContext.IncreaseOrderCommand, Source={x:Reference Name=SubMenuLV1}}"
                                                         CommandParameter="{Binding .}"
-                                                        Grid.Column="3"/>
+                                                        Grid.Column="4"/>
 
                                                 <!--<Entry Text="{Binding SetQuantity,Mode=TwoWay,Converter={StaticResource ZC}}"
                                                        Placeholder="0.0"
@@ -278,6 +303,8 @@
             </Grid>
 
             <Grid IsVisible="{Binding IsPax}"
+                  Padding="0"
+                  Margin="0"
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
                 <Frame BackgroundColor="LightBlue"
@@ -299,6 +326,7 @@
                                x:Name="PaxEntry"
                                Keyboard="Numeric"
                                TextColor="Black"  
+                                   Focused="Focused_Handler"
                                    PlaceholderColor="Gray"
                                Placeholder="PAX"/>
                         </StackLayout>                       

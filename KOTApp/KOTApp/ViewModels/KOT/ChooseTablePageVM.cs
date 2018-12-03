@@ -186,12 +186,17 @@ namespace KOTApp.ViewModels.KOT
                 {
                     var result = JsonConvert.DeserializeObject<List<KOTProd>>(functionResponse.result.ToString());
                     Helpers.Data.OrderItemsList = result;
+                    if (Helpers.Data.OrderItemsList != null && Helpers.Data.OrderItemsList.Count > 0)
+                        Helpers.Data.PAX = Helpers.Data.OrderItemsList[0].PAX;
+                    else
+                        Helpers.Data.PAX = "0";
                 }
                 IsLoading = false;
                 await App.Current.MainPage.Navigation.PushAsync(new KOTProdTabbedPage());
             }
             catch(Exception ex)
             {
+                IsLoading = false;
                 DependencyService.Get<IMessage>().ShortAlert(ex.Message);
                 //await App.Current.MainPage.Navigation.PushAsync(new KOTProdTabbedPage());
             }
@@ -233,6 +238,7 @@ namespace KOTApp.ViewModels.KOT
                 }
             }catch(Exception ex)
             {
+                IsLoading = false;
                 DependencyService.Get<IMessage>().ShortAlert(ex.Message);
             }
         }

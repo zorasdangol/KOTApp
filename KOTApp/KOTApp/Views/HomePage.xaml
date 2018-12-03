@@ -39,7 +39,7 @@
                             <Frame OutlineColor="Red"
                                    BackgroundColor="Transparent"
                                    Padding="5"
-                                   Margin="10">
+                                   Margin="5">
                                 <Label Text="Welcome to KOT App!"
                                        FontSize="Large"
                                        Margin="0,20"
@@ -84,14 +84,18 @@
                                                 Margin="0,10"           
                                                 Command="{Binding MenuCommand}"
                                                 CommandParameter="3"/>
-                                    <Button Text="Sync MenuItem"  
+                                    <Button Text="Kitchen Dispatch"  
                                                 Margin="0,10"      
                                                 Command="{Binding MenuCommand}"
                                                 CommandParameter="4"/>
-                                    <Button Text="LogOut"  
+                                <Button Text="Sync MenuItem"  
                                                 Margin="0,10"      
                                                 Command="{Binding MenuCommand}"
                                                 CommandParameter="5"/>
+                                    <Button Text="LogOut"  
+                                                Margin="0,10"      
+                                                Command="{Binding MenuCommand}"
+                                                CommandParameter="6"/>
 
                                 </StackLayout>
 

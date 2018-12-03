@@ -2,6 +2,7 @@
 using KOTApp.Interfaces;
 using KOTApp.SQLiteAccess;
 using KOTApp.Views;
+using KOTApp.Views.KitchenDispatch;
 using KOTApp.Views.KOT;
 using KOTApp.Views.KOTMemo;
 using KOTApp.Views.TableTransfer;
@@ -60,6 +61,8 @@ namespace KOTApp.ViewModels
         {
             try
             {
+                LoadingMessage = "Please Wait, for a moment...";
+                IsLoading = true;
                 if (index == "1")
                 {
                     CommonForMemoAndTransfer(1);
@@ -76,6 +79,41 @@ namespace KOTApp.ViewModels
                 }
 
                 else if (index == "4")
+                {
+                    LoadingMessage = "Please Wait! Tables Loading...";
+                    IsLoading = true;
+                    var functionResponse = await TableDataAccess.GetTableAsync();
+                    if (functionResponse.status == "ok")
+                    {
+                        //var list = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
+                        Helpers.Data.TableList = JsonConvert.DeserializeObject<List<TableDetail>>(functionResponse.result.ToString());
+                    }
+                    else
+                    {
+                        Helpers.Data.TableList = new List<TableDetail>();
+                        IsLoading = false;
+                        DependencyService.Get<IMessage>().ShortAlert(functionResponse.Message);
+                        return;
+                    }
+
+                    LoadingMessage = "Please Wait! Order Items  Loading...";
+                    IsLoading = true;
+                    functionResponse = await TableDataAccess.GetAllKOTProdAsync(Helpers.Constants.User.UserName);
+                    if (functionResponse.status == "ok")
+                    {
+                        IsLoading = false;
+                        DependencyService.Get<IMessage>().ShortAlert("Order Items loaded successfully");
+                        Helpers.Data.OrderItemsList = JsonConvert.DeserializeObject<List<KOTAppClassLibrary.Models.KOTProd>>(functionResponse.result.ToString());
+                        await App.Current.MainPage.Navigation.PushAsync(new KitchenDispatchPage());
+                    }
+                    else
+                    {
+                        DependencyService.Get<IMessage>().ShortAlert("Couldnot Load: " + functionResponse.Message);
+                    }
+                    IsLoading = false;
+                }
+
+                else if (index == "5")
                 {
                     var res = await App.Current.MainPage.DisplayAlert("Confirm", "Are you sure to Sync MenuItems?", "Yes", "No");
                     if (res)
@@ -94,12 +132,12 @@ namespace KOTApp.ViewModels
                         {
                             DependencyService.Get<IMessage>().ShortAlert("Couldnot sync: " + functionResponse.Message);
                         }
-                        IsLoading = false;
 
                     }
+                    IsLoading = false;
                 }
 
-                else if (index == "5")
+                else if (index == "6")
                 {
                     var res = await App.Current.MainPage.DisplayAlert("Confirm", "Are you sure to log Out?", "Yes", "No");
                     if (res)

@@ -161,9 +161,9 @@
                                   HasUnevenRows="True"                                                  
                                   SeparatorVisibility="None"                                     
                                   VerticalOptions="FillAndExpand">
-                            <!--<ListView.Behaviors>
+                            <ListView.Behaviors>
                                 <local:ItemTappedToCommandBehavior Command="{Binding TappedCommand}" CommandParameter="{Binding .}"/>
-                            </ListView.Behaviors>-->
+                            </ListView.Behaviors>
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                     <ViewCell >
@@ -245,8 +245,7 @@
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand"
                        CornerRadius="10"
-                       Padding="20"
-                       BackgroundColor="LightCyan">
+                       Padding="20">
                         <StackLayout Orientation="Vertical">
                             <Frame OutlineColor="Red"
                                CornerRadius="10"
@@ -257,6 +256,8 @@
                                        TextColor="Red"/>
                             </Frame>
                             <Entry Placeholder="Enter Remarks" 
+                                   x:Name="EntryRemarks"
+                                   Focused="Focused_Handler"
                                    Text="{Binding SelectedOrderItem.Remarks}"
                                    HorizontalOptions="FillAndExpand"/>
                             <Button Text="Ok" Command="{Binding RemarksOkCommand}"/>

@@ -97,6 +97,13 @@ namespace KOTApp.ViewModels
             }
         }
 
+        private string _LoadingMessage;
+        public string LoadingMessage
+        {
+            get { return _LoadingMessage; }
+            set { _LoadingMessage = value; OnPropertyChanged("LoadingMessage"); }
+        }
+
         //private string _PasswordKB;
         //public string PasswordKB
         //{
@@ -157,6 +164,7 @@ namespace KOTApp.ViewModels
                 User.ip3 = ip3;
                 User.ip4 = ip4;
                 User.Port = Port;
+                User.UniqueID = Helpers.Data.deviceToken;
                 
                 Helpers.Constants.SetMainURL(User);
                 var functionResponse = UserValidator.CheckUser(User);                
@@ -180,7 +188,7 @@ namespace KOTApp.ViewModels
                         {
                             Helpers.Data.MenuItemsList = JsonConvert.DeserializeObject<List<KOTAppClassLibrary.Models.MenuItem>>(menuitemResponse.result.ToString());
                             MenuItemsAccess.SaveList(App.DatabaseLocation, Helpers.Data.MenuItemsList);
-                        }
+                        }                        
 
                         DependencyService.Get<IMessage>().ShortAlert("Logged In Successfully");
                         App.Current.MainPage = new NavigationPage(new HomePage());

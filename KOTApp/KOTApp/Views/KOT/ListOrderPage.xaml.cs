@@ -25,6 +25,12 @@ namespace KOTApp.Views.KOT
             listview.SelectedItem = null;
         }
 
+
+        public void Focused_Handler(object sender, Xamarin.Forms.FocusEventArgs e)
+        {
+            EntryRemarks.Text = "";
+        }
+
         //public void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
         //{
         //    var lv = sender as ListView;

@@ -182,6 +182,29 @@
                     </StackLayout>
                 </Frame>
             </Grid>
+
+            <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                                   Opacity="0.5"
+                                   HorizontalOptions="FillAndExpand"
+                                   VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
+                                   CornerRadius="10"
+                                   Padding="20"
+                                   BackgroundColor="White"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center">
+                    <StackLayout Orientation="Vertical">
+                        <ActivityIndicator IsRunning="{Binding IsLoading}" />
+                        <Label Text="{Binding LoadingMessage}"
+                                               TextColor="Black"
+                                               FontAttributes="Bold"
+                                               FontSize="Medium"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
         </Grid>       
     </ContentPage.Content>
 </ContentPage>

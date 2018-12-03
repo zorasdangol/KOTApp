@@ -21,6 +21,20 @@ namespace KOTApp.ViewModels.KOTMemo
             }
         }
 
+        private BillMain _BillMain;
+        public BillMain BillMain
+        {
+            get { return _BillMain; }
+            set
+            {
+                if (value == null)
+                    return;
+                _BillMain = value;
+                OnPropertyChanged("BillMain");
+            }
+        }
+
+
 
         private List<MenuItem> _SelectedItemsList;
         public List<MenuItem> SelectedItemsList
@@ -108,63 +122,70 @@ namespace KOTApp.ViewModels.KOTMemo
                 OrderItemsList = new List<KOTProd>();
                 SelectedItemsList = new List<MenuItem>();
                 SelectedTable = Helpers.Data.SelectedTable;
-               
+                BillMain = new BillMain();
 
                 if (Helpers.Data.MenuItemsList != null)
                 {
                     SelectedItemsList = new List<MenuItem>(Helpers.Data.MenuItemsList.Where(x => x.TYPE == "A").ToList());
                 }
 
-                if (Helpers.Data.OrderItemsList != null)
+                if (Helpers.Data.BillMain != null)
                 {
-                    //OrderItemsList = Helpers.Data.OrderItemsList.OrderBy(x=>x.MCODE).ToList();
+                    BillMain = Helpers.Data.BillMain;
+                }
 
-                    OrderItemsList = new List<KOTProd>();
-                    foreach (var item in Helpers.Data.OrderItemsList)
-                    {
-                        var found = OrderItemsList.Find(x => x.MCODE == item.MCODE);
-                        if (found == null)
-                        {
-                            var newItem = new KOTProd(item);
-                            newItem.SNO = OrderItemsList.Count + 1;
-                            OrderItemsList.Add(newItem);
-                        }
-                        else
-                        {
-                            found.Quantity += item.Quantity;
-                        }
-                    }
+                //if (Helpers.Data.BillMain != null)
+                //{
+                //    BillMain = Helpers.Data.BillMain;
+                //    //OrderItemsList = Helpers.Data.OrderItemsList.OrderBy(x=>x.MCODE).ToList();
 
-                    OrderItemsList.ForEach(x => x.DisMode = (SelectedItemsList.Find(y => y.MCODE == x.MCODE).DisMode));
-                    OrderItemsList.ForEach(x => x.RATE = (SelectedItemsList.Find(y => y.MCODE == x.MCODE).RATE_A));
 
-                    foreach(var item in OrderItemsList)
-                    {
-                        if(item.DisMode == "DISCOUNTABLE")
-                        {
-                            if(item.ISBOT == 0)
-                            {
-                                item.AMOUNT = (item.RATE * item.Quantity);
-                                item.DISCOUNT = ((double)(FoodDiscount / 100) * item.AMOUNT);
-                                item.NAMNT = item.AMOUNT - item.DISCOUNT;
-                            }
-                            else
-                            {
-                                item.AMOUNT = (item.RATE * item.Quantity);
-                                item.DISCOUNT = ((double)(BeverageDiscount / 100) * item.AMOUNT);
-                                item.NAMNT = item.AMOUNT - item.DISCOUNT;
-                            }
-                        }
-                        else
-                        {
-                            item.AMOUNT = (item.RATE * item.Quantity);
-                            item.NAMNT = item.AMOUNT;
-                            item.DISCOUNT = 0;
-                        }
-                    }
-                }      
+                //    //OrderItemsList = new List<KOTProd>();
+                //    //foreach (var item in Helpers.Data.OrderItemsList)
+                //    //{
+                //    //    var found = OrderItemsList.Find(x => x.MCODE == item.MCODE);
+                //    //    if (found == null)
+                //    //    {
+                //    //        var newItem = new KOTProd(item);
+                //    //        newItem.SNO = OrderItemsList.Count + 1;
+                //    //        OrderItemsList.Add(newItem);
+                //    //    }
+                //    //    else
+                //    //    {
+                //    //        found.Quantity += item.Quantity;
+                //    //    }
+                //    //}
+
+                //    //OrderItemsList.ForEach(x => x.DisMode = (SelectedItemsList.Find(y => y.MCODE == x.MCODE).DisMode));
+                //    //OrderItemsList.ForEach(x => x.RATE = (SelectedItemsList.Find(y => y.MCODE == x.MCODE).RATE_A));
+
+                //    //foreach(var item in OrderItemsList)
+                //    //{
+                //    //    if(item.DisMode == "DISCOUNTABLE")
+                //    //    {
+                //    //        if(item.ISBOT == 0)
+                //    //        {
+                //    //            item.AMOUNT = (item.RATE * item.Quantity);
+                //    //            item.DISCOUNT = ((double)(FoodDiscount / 100) * item.AMOUNT);
+                //    //            item.NAMNT = item.AMOUNT - item.DISCOUNT;
+                //    //        }
+                //    //        else
+                //    //        {
+                //    //            item.AMOUNT = (item.RATE * item.Quantity);
+                //    //            item.DISCOUNT = ((double)(BeverageDiscount / 100) * item.AMOUNT);
+                //    //            item.NAMNT = item.AMOUNT - item.DISCOUNT;
+                //    //        }
+                //    //    }
+                //    //    else
+                //    //    {
+                //    //        item.AMOUNT = (item.RATE * item.Quantity);
+                //    //        item.NAMNT = item.AMOUNT;
+                //    //        item.DISCOUNT = 0;
+                //    //    }
+                //    //}
+                //}      
                     
-            }catch
+            }catch(Exception ex)
             {
 
             }

@@ -132,6 +132,22 @@
                     </Grid>
 
                     <StackLayout Grid.Row="1" VerticalOptions="FillAndExpand" >
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Text="Items"/>
+                            <Label Grid.Column="1" Text="Ord."/>
+                            <Label Grid.Column="2" Text="Dec."/>
+                        </Grid>
+
                         <ListView ItemsSource="{Binding OrderItemsList}"   
                                   ItemSelected="MenuItemSelected"
                                   x:Name="OrderItemsLV"
@@ -180,6 +196,40 @@
                 </Grid>
             </StackLayout>
             
+           
+
+            <Grid IsVisible="{Binding IsCancel}"
+                  Margin="0"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand"
+                  BackgroundColor="Transparent">
+                <Frame BackgroundColor="LightBlue"
+                       Opacity="0.5"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       CornerRadius="10"
+                       Padding="20"
+                       BackgroundColor="LightCyan">
+                    <StackLayout Orientation="Vertical"
+                                 HorizontalOptions="FillAndExpand">
+                       
+                        <Entry Text="{Binding CancelingUser.UserName}" Placeholder="Enter UserName" HorizontalOptions="FillAndExpand" />
+                        <Entry Text="{Binding CancelingUser.Password}" Placeholder="Enter Password" HorizontalOptions="FillAndExpand"
+                               IsPassword="True"/>
+                        <Frame OutlineColor="Black"
+                               BackgroundColor="White"
+                               Margin="5">
+                            <Entry Text="{Binding CancelingUser.Remarks}" Placeholder="Enter Remarks" HorizontalOptions="FillAndExpand"/>
+                        </Frame>
+                        <Button Text="Login" Command="{Binding LoginCheckCommand}"/>
+                        <Button Text="Cancel" Command="{Binding BackCommand}"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+
             <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
@@ -203,45 +253,7 @@
                     </StackLayout>
                 </Frame>
             </Grid>
-
-            <Grid IsVisible="{Binding IsCancel}"
-                  Margin="0"
-                  HorizontalOptions="FillAndExpand"
-                  VerticalOptions="FillAndExpand"
-                  BackgroundColor="Transparent">
-                <Frame BackgroundColor="LightBlue"
-                       Opacity="0.5"
-                       HorizontalOptions="FillAndExpand"
-                       VerticalOptions="FillAndExpand"/>
-                <Frame OutlineColor="Black"
-                       HorizontalOptions="FillAndExpand"
-                       VerticalOptions="CenterAndExpand"
-                       CornerRadius="10"
-                       Padding="20"
-                       BackgroundColor="LightCyan">
-                    <StackLayout Orientation="Vertical"
-                                 HorizontalOptions="FillAndExpand">
-                        <Frame OutlineColor="Red"
-                               CornerRadius="10"
-                               Padding="5">
-                            <Label Text="RMS Login"
-                                   HorizontalOptions="CenterAndExpand"
-                                   TextColor="Red"
-                                   Margin="0"/>
-                        </Frame>
-                        <Entry Text="{Binding CancelingUser.UserName}" Placeholder="Enter UserName" HorizontalOptions="FillAndExpand" />
-                        <Entry Text="{Binding CancelingUser.Password}" Placeholder="Enter Password" HorizontalOptions="FillAndExpand"
-                               IsPassword="True"/>
-                        <Frame OutlineColor="Black"
-                               BackgroundColor="White"
-                               Margin="5">
-                            <Entry Text="{Binding CancelingUser.Remarks}" Placeholder="Enter Remarks" HorizontalOptions="FillAndExpand"/>
-                        </Frame>
-                        <Button Text="Login" Command="{Binding LoginCheckCommand}"/>
-                        <Button Text="Cancel" Command="{Binding BackCommand}"/>
-                    </StackLayout>
-                </Frame>
-            </Grid>
+            
         </Grid>
     </ContentPage.Content>
 </ContentPage>

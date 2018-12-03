@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "955320661656",
+    "firebase_url": "https://rms-app-21c0e.firebaseio.com",
+    "project_id": "rms-app-21c0e",
+    "storage_bucket": "rms-app-21c0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955320661656:android:32f7c2910503d421",
+        "android_client_info": {
+          "package_name": "com.ims.KOTApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955320661656-7rve00ujp4r6vjavhd6pfv5vvkk0kt8s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBkhbRGgIGpSAp2sMlZb5QOoc17PGTCzo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

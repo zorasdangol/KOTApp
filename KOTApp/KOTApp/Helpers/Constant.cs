@@ -17,7 +17,7 @@ namespace KOTApp.Helpers
             ip1 = "192",
             ip2 = "168",
             ip3 = "125",
-            ip4 = "173",
+            ip4 = "184",
             Port = "80",
         };
 
@@ -29,7 +29,7 @@ namespace KOTApp.Helpers
 
         public static string IPAddress = User.ip1 + "." + User.ip2 + "." + User.ip3 + "." + User.ip4 + ":" + User.Port ;
       
-        public static string MainURL = "http://" + IPAddress + "/ImsRms/api/";        
+        public static string MainURL = "http://" + IPAddress + "/ImsRmsNew/api/";        
 
         public static string LoginURL = "userVerification";   
         public static string MenuItemsURL = "getMenuItems";
@@ -52,15 +52,23 @@ namespace KOTApp.Helpers
         public static string MergeTableURL = "MergeTable";
         public static string SplitTableURL = "SplitTable";
 
+        public static string getAllKOTProd = "getAllKOTProd?user={0}";
+
+        public static string CancelOrdersURL = "CancelOrders?tableno={0}&user={1}&remarks={2}";
+
         //public static string SaveKOTProdListURL = "GetTableDetails?TableNo={0},transferData={1},TRNUSER={2},PAX={3}";
 
         public static string SaveKOTProdListURL = "GetTableDetails?";
+        public static string SaveKitchenDispatchURL = "SaveKitchenDispatch";
+
+        public static string GetPreBillURL = "GenerateBill/{0}";
+
 
         public static void SetMainURL(User User)
         {
             IPAddress = User.ip1 + "." + User.ip2 + "." + User.ip3 + "." + User.ip4 + ":" + User.Port;
 
-            MainURL = "http://" + IPAddress + "/ImsRms/api/";
+            MainURL = "http://" + IPAddress + "/ImsRmsNew/api/";
         }
 
         public static string SetApiURL(string apiUrl)

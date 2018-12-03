@@ -11,6 +11,7 @@ using KOTApp.Views;
 using KOTApp.Views.KOT;
 using KOTApp.Views.KOTMemo;
 using KOTApp.Views.TableTransfer;
+using KOTApp.Views.KitchenDispatch;
 
 [assembly: ExportRenderer(typeof(NavigationPage), typeof(CustomNavigationRenderer))]
 namespace KOTApp.Droid.Renderers
@@ -66,6 +67,11 @@ namespace KOTApp.Droid.Renderers
             {
                 toolbar_title.Text = "Transfer Table";
 
+            }
+            else if(CurrentPage is KitchenDispatchPage)
+            {
+                toolbarIcon = null;
+                toolbar_title.Text = "Kitchen Dispatch";
             }
 
 

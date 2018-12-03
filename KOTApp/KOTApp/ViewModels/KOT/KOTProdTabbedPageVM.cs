@@ -255,6 +255,7 @@ namespace KOTApp.ViewModels.KOT
         
         public Command OrderCommand { get; set; }
         public Command IncreaseOrderCommand { get; set; }
+        public Command DecreaseMenuItemCommand { get; set; }
         public Command DecreaseOrderCommand { get; set; }
         public Command CancelCommand { get; set; }
         public Command SpecialItemCommand { get; set; }
@@ -273,7 +274,7 @@ namespace KOTApp.ViewModels.KOT
         {
             try
             {
-                IsCode = true;
+                IsName = true;
                 IsLoading = false;
                 IsCancel = false;
                 IsPax = false;
@@ -283,11 +284,12 @@ namespace KOTApp.ViewModels.KOT
                 {
                     IsPax = true;
                 }
-                PAX = "";
+                PAX = Helpers.Data.PAX;
                 OrderCommand = new Command<M.MenuItem>(ExecuteOrderCommand);
                 CancelCommand = new Command<KOTProd>(ExecuteCancelCommand);
                 IncreaseOrderCommand = new Command<M.MenuItem>(ExecuteIncreaseCommand);
-                DecreaseOrderCommand = new Command<KOTProd>(ExecuteDecreaseCommand);
+                DecreaseMenuItemCommand = new Command<M.MenuItem>(ExecuteDecreaseMenuItemCommand);
+                DecreaseOrderCommand = new Command<KOTProd>(ExecuteDecreaseOrderCommand);
                 KOTCommand = new Command<string>(ExecuteKOTCommand);
                 SpecialItemCommand = new Command(ExecuteSpecialItemCommand);
                 BackCommand = new Command(ExecuteBackCommand);
@@ -363,6 +365,7 @@ namespace KOTApp.ViewModels.KOT
                 DependencyService.Get<IMessage>().ShortAlert(ex.Message);
             }
         }
+
 
         public void ExecuteTappedCommand(object item)
         {
@@ -528,7 +531,9 @@ namespace KOTApp.ViewModels.KOT
                     SelectedOrderItem = obj;
                     IsCancel = true;
                 }
-            }catch(Exception ex)
+                CountOrderQuantity();
+            }
+            catch(Exception ex)
             {
                 DependencyService.Get<IMessage>().ShortAlert(ex.Message);
             }
@@ -541,7 +546,40 @@ namespace KOTApp.ViewModels.KOT
             IsRemarks = false;
         }
 
-        public void ExecuteDecreaseCommand(KOTProd obj)
+        public void ExecuteDecreaseMenuItemCommand(M.MenuItem menuItem)
+        {
+            if(menuItem.QUANTITY < 1)
+            {
+                DependencyService.Get<IMessage>().ShortAlert("Cannot decrease");
+                return;
+            }
+
+            var items = OrderItemsList.ToList().Where(x=> (x.MCODE == menuItem.MCODE && x.Quantity > 0));
+            var obj = items.ToList().Find(x=> x.SNO == 0 );
+            if (obj == null)
+            {
+                DependencyService.Get<IMessage>().ShortAlert("Cannot decrease already Ordered Items from here");
+                return;
+                //decimal count = 0;
+                //foreach (var item in items)
+                //{
+                //    count += (decimal)item.Quantity;
+                //}
+                //if (count > 1)
+                //{
+                //    obj = items.ToList().Find(x => (x.Quantity-x.DecQuantity) > 1);
+                //}
+                //else
+                //{
+                //    DependencyService.Get<IMessage>().ShortAlert("Cannot decrease");
+                //    return;
+                //}
+                
+            }
+            ExecuteDecreaseOrderCommand(obj);
+        }
+
+        public void ExecuteDecreaseOrderCommand(KOTProd obj)
         {
             try
             {
@@ -558,7 +596,14 @@ namespace KOTApp.ViewModels.KOT
                         M.MenuItem selectedObj = new M.MenuItem() { MCODE = obj.MCODE };
                         SelectedItemCount(selectedObj);
                     }
-                    else if (obj.Quantity <= 1)
+                    else if(obj.Quantity == 1)
+                    {
+                        var item = OrderItemsList.ToList().Find(x => (x.MCODE == obj.MCODE) && (x.SNO == 0));
+                        OrderItemsList.Remove(item);
+                        M.MenuItem selectedObj = new M.MenuItem() { MCODE = obj.MCODE };
+                        SelectedItemCount(selectedObj);
+                    }
+                    else if (obj.Quantity < 1)
                     {
                         DependencyService.Get<IMessage>().ShortAlert("Cannot decrease");
                     }
@@ -640,10 +685,12 @@ namespace KOTApp.ViewModels.KOT
                 foreach(var item in OrderItemsList)
                 {
                     var selected = SelectedItemsList.ToList().Find(x => x.MCODE == item.MCODE);
-                    selected.QUANTITY += (decimal)item.Quantity;
+                    if(selected != null)
+                        selected.QUANTITY += (decimal)item.Quantity;
                 }                
             }
-            catch { }
+            catch (Exception e)
+            { }
         }
         
 
@@ -811,7 +858,18 @@ namespace KOTApp.ViewModels.KOT
                 {
                     count = count + (decimal)i.Quantity;
                 }
-                selected.QUANTITY = count;             
+                selected.QUANTITY = count;
+
+                decimal setCount = 0;
+                var newItems = items.Where(x => x.SNO == 0).ToList();
+                if(newItems != null)
+                {
+                    foreach (var i in newItems)
+                    {
+                        setCount = setCount + (decimal)i.Quantity;
+                    }
+                    selected.SetQuantity = setCount;
+                }
                 
             }
             catch(Exception ex)

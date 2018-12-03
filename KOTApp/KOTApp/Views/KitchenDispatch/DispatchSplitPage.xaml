@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KOTApp.Views.KitchenDispatch.DispatchSplitPage"
+             xmlns:con="clr-namespace:KOTApp.Converters">
+
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+            <con:ZeroConverter x:Key="ZC"/>
+            <con:ColorChangeConverter x:Key="CCC"/>
+            <Style TargetType="Button" >
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="24"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource greenColor}"/>
+            </Style>
+
+            <Style TargetType="Label" >
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="14"
+                                 Tablet="22"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Tablet="24"
+                                 Phone="18"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="SmallLabel">
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="10"
+                                 Tablet="14"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+
+            <Style TargetType="Switch">
+                <Setter Property="Scale" >
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="0.5"
+                                 Tablet="0.9"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="Margin" >
+                    <Setter.Value>
+                        <OnIdiom x:TypeArguments="x:Double"
+                                 Phone="0"
+                                 Tablet="2"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid BackgroundColor="Black">
+            <StackLayout BackgroundColor="Black" Padding="10" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">                
+                <Label Text="Selected Order to Split:" TextColor="White" Margin="10"/>                
+                <Frame BackgroundColor="{Binding SelectedOrder.SNO,Converter={StaticResource CCC}}"
+                       Margin="10"
+                       Padding="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{Binding SelectedOrder.ItemDesc}"
+                               Grid.Column="0"
+                               TextColor="White"/>
+                        <Label Text="{Binding SelectedOrder.TABLENO}"
+                               Grid.Column="1"
+                               TextColor="White"/>
+                        <Label Text="{Binding SelectedOrder.Quantity}"
+                               TextColor="White"
+                               Grid.Column="2"
+                               />
+                    </Grid>
+                </Frame>
+
+                <BoxView HeightRequest="2" BackgroundColor="Red"/>
+                <Label Text="Enter Split Remarks and Quantity:" TextColor="White" FontAttributes="Bold"/>
+                <Frame OutlineColor="Beige"
+                       Margin="10"
+                       BackgroundColor="White">
+                    <StackLayout>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Entry x:Name="FREntry" Grid.Row="0" Grid.Column="0" Focused="FR_Focused_Handler" Text="{Binding FirstRemarks}" Placeholder="Remarks 1" />
+                            <Entry x:Name="SREntry" Grid.Row="0" Grid.Column="1" Focused="SR_Focused_Handler" Text="{Binding SecondRemarks}" Placeholder="Remarks 2"/>
+
+                            <Entry x:Name="FQEntry" Grid.Row="1" Grid.Column="0"  Focused="FQ_Focused_Handler" Text="{Binding FirstQuantity,Converter={StaticResource ZC}}" Keyboard="Numeric" Placeholder="Quantity 1" />
+                            <Entry x:Name="SQEntry" Grid.Row="1" Grid.Column="1"  Focused="SQ_Focused_Handler" Text="{Binding SecondQuantity,Converter={StaticResource ZC}}" Keyboard="Numeric" Placeholder="Quantity 2"/>
+
+                        </Grid>
+                    </StackLayout>
+                  </Frame>
+               
+                <Button Text="Save" VerticalOptions="End" Command="{Binding SaveCommand}"/>
+                <Button Text="Cancel" VerticalOptions="End" Command="{Binding BackCommand}" BackgroundColor="{StaticResource redColor}"/>
+            </StackLayout>
+         
+            <Grid x:Name="loadingOverlay" IsVisible="{Binding IsLoading}"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+                <Frame BackgroundColor="LightBlue"
+                                   Opacity="0.5"
+                                   HorizontalOptions="FillAndExpand"
+                                   VerticalOptions="FillAndExpand"/>
+                <Frame OutlineColor="Black"
+                                   CornerRadius="10"
+                                   Padding="20"
+                                   BackgroundColor="White"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center">
+                    <StackLayout Orientation="Vertical">
+                        <ActivityIndicator IsRunning="{Binding IsLoading}" />
+                        <Label Text="{Binding LoadingMessage}"
+                                               TextColor="Black"
+                                               FontAttributes="Bold"
+                                               FontSize="Medium"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
