@@ -1,4 +1,5 @@
 ﻿using KOTApp.ViewModels.KOT;
+using KOTAppClassLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,20 @@ namespace KOTApp.Views.KOT
         {
             var listview = sender as ListView;
             listview.SelectedItem = null;
+        }
+
+        public void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            try
+            {
+                var item = e.Item as KOTProd;
+                var vm = BindingContext as KOTProdTabbedPageVM;
+                vm.HideOrShowButton(item);
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         protected override bool OnBackButtonPressed()

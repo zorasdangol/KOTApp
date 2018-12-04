@@ -152,7 +152,7 @@
                                   ItemSelected="MenuItemSelected"
                                   x:Name="OrderItemsLV"
                                   HasUnevenRows="True"                                                  
-                                  SeparatorVisibility="None"                                  
+                                  SeparatorVisibility="None"                                 
                                   VerticalOptions="FillAndExpand">                  
                             <ListView.ItemTemplate>
                                 <DataTemplate>
@@ -160,32 +160,39 @@
                                         <StackLayout Margin="5" >
                                             <Frame BackgroundColor="{Binding SNO,Converter={StaticResource CCC}}"
                                                    Padding="5" >
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="5*"/>
-                                                        <ColumnDefinition Width="2*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Text="{Binding ItemDesc}"
+                                                <StackLayout>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="5*"/>
+                                                            <ColumnDefinition Width="2*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Text="{Binding ItemDesc}"
                                                            Grid.Column="0"
                                                            TextColor="White"/>
-                                                    <Label Text="{Binding Quantity}"
+                                                        <Label Text="{Binding Quantity}"
                                                            Grid.Column="1"
                                                            TextColor="White"/>
-                                                    <Label Text="{Binding DecQuantity}"
+                                                        <Label Text="{Binding DecQuantity}"
                                                            Grid.Column="2"
                                                            TextColor="Black"/>
-                                                    <Button Text="-"
+                                                        <Button Text="-"
                                                             TextColor="White"
                                                             Command="{Binding Path=BindingContext.DecreaseOrderCommand, Source={x:Reference Name=OrderItemsLV}}"
                                                             CommandParameter="{Binding .}" Grid.Column="3"/>
-                                                    <Button Text="Cancel"
+                                                        <Button Text="Cancel"
                                                             TextColor="White"
                                                             Command="{Binding Path=BindingContext.CancelCommand, Source={x:Reference Name=OrderItemsLV}}"
                                                             CommandParameter="{Binding .}" Grid.Column="4"/>
-                                                </Grid>
+                                                    </Grid>
+                                                    <!--<StackLayout IsVisible="{Binding IsVisible}">
+                                                        <Entry x:Name="RemarksEntry" 
+                                                               Text="{Binding Path=BindingContext.Remarks, Source={x:Reference Name=OrderItemsLV}}" Placeholder="Enter Remarks"/>                                                        
+                                                    </StackLayout>-->
+                                                </StackLayout>
+                                               
                                             </Frame>
                                         </StackLayout>
                                     </ViewCell>

@@ -40,12 +40,15 @@ namespace KOTApp.ViewModels.KOT
             }
         }
 
+        public KOTProd _oldItem { get; set; }
+
         internal void HideOrShowOrder(KOTProd order)
         {
             order.IsVisible = true;
             //UpdateOrderRemarks(order);
         }
 
+   
         //private void UpdateOrderRemarks(KOTProd order)
         //{
         //    var index = 
@@ -664,8 +667,7 @@ namespace KOTApp.ViewModels.KOT
                 DependencyService.Get<IMessage>().ShortAlert(ex.Message);
             }
         }
-
-
+        
         //Command Execution for SpecialItem button
         public void ExecuteSpecialItemCommand()
         {
@@ -829,8 +831,7 @@ namespace KOTApp.ViewModels.KOT
                 DependencyService.Get<IMessage>().ShortAlert(ex.Message);
             }
         }
-
-
+        
         //Function for Viewing Items of Selected Group 
         private void ViewSelectedMenu(M.MenuItem value)
         {
@@ -907,6 +908,45 @@ namespace KOTApp.ViewModels.KOT
                 DependencyService.Get<IMessage>().ShortAlert(ex.Message);
             }
         }
-        
+
+
+        public void HideOrShowButton(KOTProd item)
+        {
+            try
+            {
+                if (_oldItem == item)
+                {
+                    //click twice on the same item will hide it
+                    item.IsVisible = !item.IsVisible;
+                    UpdateOrder(item);
+                }
+                else
+                {
+                    if (_oldItem != null)
+                    {
+                        //hide previous selected item
+                        _oldItem.IsVisible = false;
+                        UpdateOrder(_oldItem);
+                    }
+                    //show selected item
+                    item.IsVisible = true;
+                    UpdateOrder(item);
+                }
+                _oldItem = item;
+                //SelectedOrder = item;
+            }
+            catch (Exception ex)
+            {
+                DependencyService.Get<IMessage>().ShortAlert(ex.Message);
+            }
+        }
+
+        public void UpdateOrder(KOTProd item)
+        {
+            var index = OrderItemsList.IndexOf(item);
+            OrderItemsList.Remove(item);
+            OrderItemsList.Insert(index, item);
+        }
+
     }
 }

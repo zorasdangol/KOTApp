@@ -64,7 +64,7 @@ namespace KOTApp
                     //        MainPage = new LoginPage();
                     //    }
 
-                    MainPage = new LoginPage();
+                        MainPage = new LoginPage();
 
                     //}                
                 }
